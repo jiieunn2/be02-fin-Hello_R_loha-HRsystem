@@ -5,6 +5,7 @@ package com.HelloRolha.HR.feature.employee.model.entity;
 import com.HelloRolha.HR.common.entity.BaseEntity;
 import com.HelloRolha.HR.feature.department.model.entity.Department;
 import com.HelloRolha.HR.feature.position.model.entity.Position;
+
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
+
 
 @Entity
 @Getter
