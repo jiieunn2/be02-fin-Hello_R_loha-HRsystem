@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Getter
 @Setter
-public class EmployeeDto {
+public class CommuteDto {
 
     private Integer id;
     private LocalDateTime start_time;

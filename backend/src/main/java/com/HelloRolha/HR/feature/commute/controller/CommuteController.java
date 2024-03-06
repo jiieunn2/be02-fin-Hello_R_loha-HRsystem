@@ -1,7 +1,7 @@
 package com.HelloRolha.HR.feature.commute.controller;
 
 
-import com.HelloRolha.HR.feature.commute.service.EmployeeService;
+import com.HelloRolha.HR.feature.commute.service.CommuteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/employee")
-public class EmployeeController {
+public class CommuteController {
     @Autowired
-    private EmployeeService employeeService;
+    private CommuteService commuteService;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService=employeeService;
+    public CommuteController(CommuteService commuteService) {
+        this.commuteService=commuteService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/attend")
-    public ResponseEntity attend(Integer id) {
-        return ResponseEntity.ok().body(employeeService.attend(id));
+    @RequestMapping(method = RequestMethod.GET, value = "/commute")
+    public ResponseEntity commute(Integer id) {
+        return ResponseEntity.ok().body(commuteService.commute(id));
     }
 
 //    @PostMapping("/checkout")

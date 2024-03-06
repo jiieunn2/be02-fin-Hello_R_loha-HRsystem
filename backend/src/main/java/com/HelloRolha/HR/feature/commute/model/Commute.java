@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Employee {
+public class Commute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
