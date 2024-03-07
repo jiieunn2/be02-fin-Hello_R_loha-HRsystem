@@ -58,7 +58,7 @@ public class ApproveService {
                 if (lines.size() >= nextOrder) {
                     ApproveLine nextLine = lines.get(nextOrder - 1);
                     if ("PENDING".equals(nextLine.getStatus())) {
-                        // 다음 결재자에게 결재 권한 부여 (예: 알림 전송 등)
+
                         granttonextconfirmer(nextLine);
                     }
                 }
