@@ -1,15 +1,20 @@
 package com.HelloRolha.HR.feature.approve.controller;
 
-import com.HelloRolha.HR.feature.approve.repo.ApproveRepository;
+import com.HelloRolha.HR.feature.approve.model.dto.ApproveCreateReq;
+import com.HelloRolha.HR.feature.approve.service.ApproveService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/approve")
 @RequiredArgsConstructor
 public class ApproveController {
-    private ApproveRepository approveRepository;
+    private final ApproveService approveService;
+
+    @PostMapping("/create")
+    public ResponseEntity<ApproveCreateReq> create(@RequestBody ApproveCreateReq approveDto){
+        ApproveCreateReq create = approveService.create(approveDto);
+        return ResponseEntity.ok().body(create);
+    }
 }
