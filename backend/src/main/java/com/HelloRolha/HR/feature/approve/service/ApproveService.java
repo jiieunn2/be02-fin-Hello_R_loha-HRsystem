@@ -53,7 +53,7 @@ public class ApproveService {
                 line.setApproveTime(LocalDateTime.now());
                 approveLineRepository.save(line);
 
-                // 다음 결재자 결재 가능 상태로 변경
+
                 int nextOrder = line.getOrder() + 1;
                 if (lines.size() >= nextOrder) {
                     ApproveLine nextLine = lines.get(nextOrder - 1);
