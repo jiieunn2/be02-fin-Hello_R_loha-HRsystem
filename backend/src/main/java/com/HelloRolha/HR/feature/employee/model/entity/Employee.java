@@ -1,10 +1,8 @@
 package com.HelloRolha.HR.feature.employee.model.entity;
-
-
-
 import com.HelloRolha.HR.common.entity.BaseEntity;
 import com.HelloRolha.HR.feature.department.model.entity.Department;
 import com.HelloRolha.HR.feature.position.model.entity.Position;
+
 
 import lombok.*;
 
@@ -41,4 +39,5 @@ public class Employee extends BaseEntity {
     //외래키 TODO 관계 추가해야함
 //    private Department department;
 //    private Position position;
+
 }

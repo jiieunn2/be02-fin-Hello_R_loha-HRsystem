@@ -5,10 +5,12 @@ import com.HelloRolha.HR.feature.commute.model.Commute;
 import com.HelloRolha.HR.feature.commute.model.dto.CommuteDto;
 import com.HelloRolha.HR.feature.commute.repository.CommuteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class CommuteService {
+
     private final CommuteRepository commuteRepository;
 
     @Autowired
@@ -42,5 +44,6 @@ public class CommuteService {
 //                .endTime(commute.getEndTime())
 //                .build();
 //    }
+
 
 }

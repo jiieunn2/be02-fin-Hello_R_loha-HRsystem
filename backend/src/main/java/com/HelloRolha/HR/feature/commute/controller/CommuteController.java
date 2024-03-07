@@ -1,6 +1,4 @@
 package com.HelloRolha.HR.feature.commute.controller;
-
-
 import com.HelloRolha.HR.feature.commute.model.dto.CommuteDto;
 import com.HelloRolha.HR.feature.commute.service.CommuteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +34,3 @@ public class CommuteController {
 //        return ResponseEntity.ok().body(commuteService.commute(id));
 //    }
 //
-
-}

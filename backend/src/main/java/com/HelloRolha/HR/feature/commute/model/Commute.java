@@ -1,6 +1,7 @@
 package com.HelloRolha.HR.feature.commute.model;
 
 
+
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -28,5 +29,6 @@ public class Commute {
         this.endTime = endTime;
         this.sumTime = sumTime;
     }
+
 
 }

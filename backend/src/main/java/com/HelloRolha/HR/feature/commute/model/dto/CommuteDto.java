@@ -27,11 +27,3 @@ public class CommuteDto {
 
 }
 
-
-
-
-
-
-
-
-
