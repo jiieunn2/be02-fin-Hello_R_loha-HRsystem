@@ -1,10 +1,8 @@
 package com.HelloRolha.HR.feature.commute.model;
 
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,8 +18,17 @@ public class Commute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDateTime start_time;
-    private LocalDateTime end_time;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private LocalDateTime sumTime;
+
+    @Builder
+    public Commute(Integer id, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime sumTime){
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.sumTime = sumTime;
+    }
 
 
 }

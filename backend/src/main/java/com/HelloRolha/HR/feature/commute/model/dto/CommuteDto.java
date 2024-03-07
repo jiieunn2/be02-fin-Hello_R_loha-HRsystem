@@ -7,6 +7,11 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Builder
 @Data
 @Getter
@@ -14,16 +19,11 @@ import java.time.LocalDateTime;
 public class CommuteDto {
 
     private Integer id;
-    private LocalDateTime start_time;
-    private LocalDateTime end_time;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private LocalDateTime sumTime;
+
 
 
 }
-
-
-
-
-
-
-
 
