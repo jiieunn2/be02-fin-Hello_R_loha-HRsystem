@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 @Builder
 @Data
-public class GooutCreateReq {
+public class GooutList {
+    private Integer id;
+    private String name;
     private LocalDateTime period;
-    private Integer agentId;
-    private Integer employeeId;
 
     //
 //    private Integer typeId;
