@@ -16,22 +16,16 @@ public class CommuteController {
         this.commuteService = commuteService;
     }
 
+    @PostMapping("/commute")
+    public ResponseEntity<CommuteDto> commute() {
+        CommuteDto commuteDto = commuteService.commute();
+        return ResponseEntity.ok().body(commuteDto);
+    }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/commute")
-    public ResponseEntity<Integer> commute(@RequestBody CommuteDto commuteDto) {
-        Integer commuteId = commuteService.commute(commuteDto);
-        return ResponseEntity.ok().body(commuteId);
+    @PatchMapping("/leave/{id}")
+    public ResponseEntity<CommuteDto> leave(@PathVariable Integer id) {
+        CommuteDto commuteDto = commuteService.leave(id);
+        return ResponseEntity.ok().body(commuteDto);
     }
 }
-//    @Autowired
-//    private CommuteService commuteService;
-//
-//    public CommuteController(CommuteService commuteService) {
-//        this.commuteService=commuteService;
-//    }
-//
-//    @RequestMapping(method = RequestMethod.GET, value = "/commute")
-//    public ResponseEntity commute(Integer id) {
-//        return ResponseEntity.ok().body(commuteService.commute(id));
-//    }
-//
+
