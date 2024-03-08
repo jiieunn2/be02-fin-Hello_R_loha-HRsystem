@@ -1,9 +1,7 @@
 package com.HelloRolha.HR.feature.goout.controller;
 
 import com.HelloRolha.HR.feature.goout.model.Goout;
-import com.HelloRolha.HR.feature.goout.model.entity.GooutCreateReq;
-import com.HelloRolha.HR.feature.goout.model.entity.GooutCreateRes;
-import com.HelloRolha.HR.feature.goout.model.entity.GooutCreateResult;
+import com.HelloRolha.HR.feature.goout.model.entity.*;
 import com.HelloRolha.HR.feature.goout.service.GooutService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/goout")
 @CrossOrigin("*")
 public class GooutController {
-    GooutService gooutService;
+    private final GooutService gooutService;
 
     public GooutController(GooutService gooutService) {
         this.gooutService = gooutService;
@@ -38,29 +36,50 @@ public class GooutController {
                 .build();
         return ResponseEntity.ok().body(response);
     }
+    @GetMapping("/check")
+    public ResponseEntity<GooutListRes> list() {
+        GooutListRes response = gooutService.list();
+        return ResponseEntity.ok(response);
+    }
 
-//    @RequestMapping(method = RequestMethod.GET, value = "/listCeo")
-//    public ResponseEntity listCeo() {
-//
-//        return ResponseEntity.ok().body(productCeoService.listCeo());
-//    }
-//
-//    @GetMapping("/{idx}")
-//    public ResponseEntity readCeo(@PathVariable Long idx) {
-//        return ResponseEntity.ok().body(productCeoService.readCeo(idx));
-//    }
-//
-//    @RequestMapping(method = RequestMethod.PATCH, value = "/updateCeo")
-//    public ResponseEntity updateCeo(@RequestBody ProductCeoUpdateReq productCeoUpdateReq) {
-//        productCeoService.updateCeo(productCeoUpdateReq);
-//
-//        return ResponseEntity.ok().body("수정");
-//    }
-//
-//    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteCeo")
-//    public ResponseEntity deleteCeo(@RequestParam Long idx) {
-//        productCeoService.deleteCeo(idx);
-//        return ResponseEntity.ok().body("삭제");
-//
-//    }
+    @GetMapping("/check/{id}")
+    public ResponseEntity<GooutReadRes> read(@PathVariable Integer id) {
+        GooutReadRes response = gooutService.read(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/return")
+    public ResponseEntity<GooutReturnRes> returnStatus(@RequestBody GooutReturnReq gooutReturnReq) {
+        gooutService.returnStatus(gooutReturnReq.getId(), gooutReturnReq.getStatus());
+        GooutReturnRes response = GooutReturnRes.builder()
+                .code(1200)
+                .message("휴가/외출 결재 성공")
+                .success(true)
+                .isSuccess(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+    @PatchMapping("/update")
+    public ResponseEntity<GooutUpdateRes> update(@RequestBody GooutUpdateReq gooutUpdateReq) {
+        gooutService.update(gooutUpdateReq);
+        GooutUpdateRes response = GooutUpdateRes.builder()
+                .code(1200)
+                .message("휴가/외출 정보 수정 성공")
+                .success(true)
+                .isSuccess(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<GooutDeleteRes> delete(@PathVariable Integer id) {
+        gooutService.delete(id);
+        GooutDeleteRes response = GooutDeleteRes.builder()
+                .code(1200)
+                .message("휴가/외출 정보 삭제 성공")
+                .success(true)
+                .isSuccess(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
 }
