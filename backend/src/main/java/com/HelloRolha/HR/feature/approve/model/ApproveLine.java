@@ -1,5 +1,6 @@
 package com.HelloRolha.HR.feature.approve.model;
 
+import com.HelloRolha.HR.common.entity.ApproveLineBaseEntity;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import lombok.*;
 
@@ -12,27 +13,15 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApproveLine {
+public class ApproveLine extends ApproveLineBaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private LocalDateTime approveTime;
-
-//    private LocalDateTime applyTime;
 
     private String comment;
 
     @ManyToOne @JoinColumn(name = "approve_id")
     private Approve approve;
 
-    @ManyToOne @JoinColumn(name = "confirmer_id")
-    private Employee confirmer;
-
-    private String status = "PENDING";
-
-    private Integer order;
-
-
-
+    private int order;
 
 }
