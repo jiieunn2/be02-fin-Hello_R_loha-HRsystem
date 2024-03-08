@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Commute {
     @Id
@@ -20,15 +21,13 @@ public class Commute {
     private Integer id;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private LocalDateTime sumTime;
+    private String sumTime;
 
-    @Builder
-    public Commute(Integer id, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime sumTime){
+    public Commute(Integer id, LocalDateTime startTime, LocalDateTime endTime, String sumTime) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.sumTime = sumTime;
     }
-
-
 }
+

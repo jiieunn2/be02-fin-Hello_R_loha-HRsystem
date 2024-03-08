@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Builder
 @Data
-public class GooutUpdateResult {
-    private Integer id;
+public class GooutTypeList {
+    private String name;
 }
