@@ -7,6 +7,7 @@ import com.HelloRolha.HR.feature.position.model.entity.Position;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,7 +19,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee extends BaseEntity {
@@ -27,7 +28,7 @@ public class Employee extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer remainingVacationDays;
+    private Integer remainingVacationDays;      //Goout에서 사용하기 위해 임시로 만들었는데, 추후 Goout쪽에서 완성 시 삭제예정
     private String position;
     //
 
