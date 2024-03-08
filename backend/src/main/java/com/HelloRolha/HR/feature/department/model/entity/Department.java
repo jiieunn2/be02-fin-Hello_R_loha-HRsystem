@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Department extends BaseEntity {

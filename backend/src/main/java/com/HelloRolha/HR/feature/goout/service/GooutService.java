@@ -8,6 +8,7 @@ import com.HelloRolha.HR.feature.goout.model.GooutFile;
 import com.HelloRolha.HR.feature.goout.model.entity.*;
 import com.HelloRolha.HR.feature.goout.repo.GooutFileRepository;
 import com.HelloRolha.HR.feature.goout.repo.GooutRepository;
+import com.HelloRolha.HR.feature.goout.repo.GooutTypeRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 public class GooutService {
     private final GooutRepository gooutRepository;
     private final GooutFileRepository gooutFileRepository;
+    private final GooutTypeRepository gooutTypeRepository;
     private final EmployeeRepository employeeRepository;
     private final AmazonS3 s3;
 
@@ -48,27 +50,27 @@ public class GooutService {
         Employee employee = employeeRepository.findById(gooutCreateReq.getEmployeeId())
                 .orElseThrow(() -> new IllegalArgumentException("신청직원의 ID가 존재하지 않습니다."));
 
-        return gooutRepository.save(Goout.builder()
+        Goout goout = Goout.builder()
                 .period(gooutCreateReq.getPeriod())
                 .agent(agent)
                 .employee(employee)
                 .type(gooutCreateReq.getType())
                 .first(gooutCreateReq.getFirst())
                 .last(gooutCreateReq.getLast())
-                .build());
+                .build();
+
+        return gooutRepository.save(goout);
     }
 
 //    이거는 Employee가 null있으면 아예 list가 안나오는 방식
-    @Transactional
-    public GooutListRes list() {
-        List<Goout> goouts = gooutRepository.findAll();
-        List<GooutList> gooutLists = new ArrayList<>();
+@Transactional
+public List<GooutList> list() {
+    List<Goout> goouts = gooutRepository.findAll();
+    List<GooutList> gooutLists = new ArrayList<>();
 
-        for (Goout goout : goouts) {
-            Employee employee = goout.getEmployee();
-            if (employee == null) {
-                throw new RuntimeException("Employee 정보를 찾을 수 없습니다.");
-            }
+    for (Goout goout : goouts) {
+        Employee employee = goout.getEmployee();
+        if (employee != null) {
             GooutList gooutList = GooutList.builder()
                     .id(goout.getId())
                     .name(employee.getName())
@@ -79,19 +81,13 @@ public class GooutService {
                     .build();
             gooutLists.add(gooutList);
         }
-
-        return GooutListRes.builder()
-                .code(1200)
-                .message("휴가/외출 확인 성공")
-                .success(true)
-                .isSuccess(true)
-                .result(gooutLists)
-                .build();
     }
 
+    return gooutLists;
+}
 //    이거는 Employee가 null이 아닐 경우에만 리스트에 추가하는 방식
-//    @Transactional
-//    public GooutListRes list() {
+//@Transactional
+//    public List<GooutList> list() {
 //        List<Goout> goouts = gooutRepository.findAll();
 //        List<GooutList> gooutLists = new ArrayList<>();
 //
@@ -110,17 +106,12 @@ public class GooutService {
 //            }
 //        }
 //
-//        return GooutListRes.builder()
-//                .code(1200)
-//                .message("휴가/외출 확인 성공")
-//                .success(true)
-//                .isSuccess(true)
-//                .result(gooutLists)
-//                .build();
+//        return gooutLists;
 //    }
 
+
     @Transactional
-    public GooutReadRes read(Integer id) {
+    public GooutRead read(Integer id) {
         Optional<Goout> optionalGoout = gooutRepository.findById(id);
 
         return optionalGoout.map(goout -> {
@@ -139,7 +130,7 @@ public class GooutService {
                 throw new RuntimeException("Agent 정보를 찾을 수 없습니다.");
             }
 
-            GooutRead gooutRead = GooutRead.builder()
+            return GooutRead.builder()
                     .period(goout.getPeriod())
                     .agentName(agent.getName())
                     .employeeName(employee.getName())
@@ -149,14 +140,6 @@ public class GooutService {
                     .first(goout.getFirst())
                     .last(goout.getLast())
                     .filename(filenames)
-                    .build();
-
-            return GooutReadRes.builder()
-                    .code(1200)
-                    .message("휴가/외출 상세 확인 성공")
-                    .success(true)
-                    .isSuccess(true)
-                    .result(gooutRead)
                     .build();
         }).orElse(null);
     }
