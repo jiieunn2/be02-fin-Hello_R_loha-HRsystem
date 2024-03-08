@@ -22,6 +22,7 @@ public class CommuteController {
         Integer commuteId = commuteService.commute(commuteDto);
         return ResponseEntity.ok().body(commuteId);
     }
+}
 //    @Autowired
 //    private CommuteService commuteService;
 //

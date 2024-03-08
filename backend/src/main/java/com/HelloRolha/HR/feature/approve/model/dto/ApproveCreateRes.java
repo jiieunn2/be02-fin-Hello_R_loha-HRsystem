@@ -12,10 +12,16 @@ import java.time.LocalDateTime;
 @Data
 @Getter
 @Setter
-public class ApproveCreateReq {
+public class ApproveCreateRes {
     private Integer id;
 
     private String content;
+
+    private String filename;
+
+    private LocalDateTime correctionTime;
+
+    private LocalDateTime createTime;
 
     private Integer status;
 
