@@ -1,4 +1,4 @@
-package com.HelloRolha.HR.feature.commute.service;
+package com.HelloRolha.HR.error.exception;
 
 public class CommuteNotFoundException extends RuntimeException {
     public CommuteNotFoundException(String message) {

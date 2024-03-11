@@ -2,9 +2,13 @@ package com.HelloRolha.HR.feature.commute.model;
 
 
 
+
+import com.HelloRolha.HR.common.entity.BaseEntity;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
-import com.HelloRolha.HR.feature.position.model.entity.Position;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,26 +16,16 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 @AllArgsConstructor
-public class Commute {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
+@DynamicUpdate
+public class Commute extends BaseEntity {
     private String sumTime;
-
-    public Commute(Integer id, LocalDateTime startTime, LocalDateTime endTime, String sumTime) {
-        this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.sumTime = sumTime;
-    }
-
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Employee_id")
+    @JoinColumn(name = "employee_id")
     private Employee employee;
+
 }
 
