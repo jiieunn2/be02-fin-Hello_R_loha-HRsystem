@@ -11,7 +11,6 @@ public class GooutCreateReq {
     private LocalDateTime period;
     private Integer agentId;
     private Integer employeeId;
-
     //
 //    private Integer typeId;
     private String type;

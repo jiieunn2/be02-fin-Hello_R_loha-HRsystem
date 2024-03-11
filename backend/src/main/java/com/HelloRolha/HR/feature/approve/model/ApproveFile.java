@@ -7,8 +7,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 
 @Entity
-@Setter @Getter
-@SuperBuilder
+@Setter @Getter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
 public class ApproveFile extends FileBaseEntity {
     private String title;
