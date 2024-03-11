@@ -24,5 +24,5 @@ public class ApproveLineBaseEntity extends BaseEntity {
     private String comment;
     private LocalDateTime approveTime;
     private LocalDateTime applyTime;
-    private String status;
+    private Integer status;
 }
