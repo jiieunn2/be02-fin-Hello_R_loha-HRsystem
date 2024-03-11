@@ -1,8 +1,7 @@
 package com.HelloRolha.HR.feature.department.controller;
 
 import com.HelloRolha.HR.common.dto.BaseRes;
-import com.HelloRolha.HR.feature.commute.model.dto.CommuteDto;
-import com.HelloRolha.HR.feature.department.model.dto.CreateDepartmentReq;
+import com.HelloRolha.HR.feature.department.model.dto.create.CreateDepartmentReq;
 import com.HelloRolha.HR.feature.department.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
