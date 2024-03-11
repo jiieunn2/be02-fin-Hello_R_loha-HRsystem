@@ -1,11 +1,9 @@
 package com.HelloRolha.HR.feature.overtime.model;
 
+import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -21,7 +19,9 @@ public class Overtime {
     private String startTime;
     private String endTime;
     private String reason;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
     @Builder
     public Overtime(Integer id, String shift, String startTime, String endTime,String reason, String date) {
         this.id = id;

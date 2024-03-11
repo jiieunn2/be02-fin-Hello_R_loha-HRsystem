@@ -8,8 +8,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
@@ -19,8 +18,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class ApproveLineBaseEntity extends BaseEntity {
-//    private Employee confirmer1Id;
-//    private Employee confirmer2Id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id")
+    private Employee confirmerId;
     private String comment;
     private LocalDateTime approveTime;
     private LocalDateTime applyTime;
