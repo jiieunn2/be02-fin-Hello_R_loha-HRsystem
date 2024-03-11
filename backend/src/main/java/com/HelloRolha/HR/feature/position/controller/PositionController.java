@@ -1,6 +1,8 @@
 package com.HelloRolha.HR.feature.position.controller;
 
+import com.HelloRolha.HR.common.dto.BaseRes;
 import com.HelloRolha.HR.feature.employee.service.EmployeeService;
+import com.HelloRolha.HR.feature.position.model.dto.create.CreatePositionReq;
 import com.HelloRolha.HR.feature.position.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,14 @@ public class PositionController {
     private final PositionService positionService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity create(Integer positionNum, String positionName) {
-        positionService.create(positionNum,positionName);
-        return ResponseEntity.ok().body("v3");
+    public ResponseEntity<BaseRes> create(CreatePositionReq createPositionReq) {
+
+        BaseRes res = BaseRes.builder()
+                .code(200)
+                .isSuccess(true)
+                .message("부서 생성 성공")
+                .result(positionService.create(createPositionReq))
+                .build();
+        return ResponseEntity.ok().body(res);
     }
 }

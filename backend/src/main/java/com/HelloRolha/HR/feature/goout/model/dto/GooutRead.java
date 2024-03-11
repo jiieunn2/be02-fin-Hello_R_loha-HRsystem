@@ -1,4 +1,4 @@
-package com.HelloRolha.HR.feature.goout.model.entity;
+package com.HelloRolha.HR.feature.goout.model.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +15,8 @@ public class GooutRead {
     private String filename;
 
     //임시
-    private Integer remainingVacationDays;
-    private String position;
+    //private Integer remainingVacationDays;
+    //private String position;
 //    private Integer typeId;
     private String type;
     private LocalDateTime first;

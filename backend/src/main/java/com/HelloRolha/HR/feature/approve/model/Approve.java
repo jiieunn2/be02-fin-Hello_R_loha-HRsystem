@@ -4,6 +4,7 @@ package com.HelloRolha.HR.feature.approve.model;
 import com.HelloRolha.HR.common.entity.BaseEntity;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)

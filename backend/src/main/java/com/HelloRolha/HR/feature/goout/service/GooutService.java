@@ -5,7 +5,7 @@ import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import com.HelloRolha.HR.feature.employee.repo.EmployeeRepository;
 import com.HelloRolha.HR.feature.goout.model.Goout;
 import com.HelloRolha.HR.feature.goout.model.GooutFile;
-import com.HelloRolha.HR.feature.goout.model.entity.*;
+import com.HelloRolha.HR.feature.goout.model.dto.*;
 import com.HelloRolha.HR.feature.goout.repo.GooutFileRepository;
 import com.HelloRolha.HR.feature.goout.repo.GooutRepository;
 import com.HelloRolha.HR.feature.goout.repo.GooutTypeRepository;
@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 public class GooutService {
     private final GooutRepository gooutRepository;
     private final GooutFileRepository gooutFileRepository;
-    private final GooutTypeRepository gooutTypeRepository;
     private final EmployeeRepository employeeRepository;
     private final AmazonS3 s3;
 
@@ -134,8 +133,7 @@ public List<GooutList> list() {
                     .period(goout.getPeriod())
                     .agentName(agent.getName())
                     .employeeName(employee.getName())
-                    .remainingVacationDays(employee.getRemainingVacationDays())
-                    .position(employee.getPosition())
+                    //.remainingVacationDays(employee.getRemainingVacationDays())
                     .type(goout.getType())
                     .first(goout.getFirst())
                     .last(goout.getLast())
