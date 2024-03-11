@@ -4,6 +4,7 @@ import com.HelloRolha.HR.config.utils.JwtUtils;
 import com.HelloRolha.HR.error.UserAccountException;
 import com.HelloRolha.HR.error.UserNotFoundException;
 import com.HelloRolha.HR.feature.department.model.entity.Department;
+import com.HelloRolha.HR.feature.employee.model.dto.EmployeeDto;
 import com.HelloRolha.HR.feature.employee.model.dto.Login.LoginReq;
 import com.HelloRolha.HR.feature.employee.model.dto.Login.LoginRes;
 import com.HelloRolha.HR.feature.employee.model.dto.SignUp.SignUpReq;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,5 +68,60 @@ public class EmployeeService {
         } else {
             throw UserAccountException.forInvalidPassword(loginReq.getPassword());
         }
+    }
+
+    public List<EmployeeDto> listEmployee() {
+        List<EmployeeDto> employeeDtos = new ArrayList<>();
+        List<Employee> employeeList = employeeRepository.findAll();
+        for (Employee employee: employeeList) {
+            employeeDtos.add(EmployeeDto.builder()
+                    .id(employee.getId())
+                    .name(employee.getName())
+                    .employmentDate(employee.getEmploymentDate())
+                    .department(employee.getDepartment().getDepartmentName())
+                    .position(employee.getPosition().getPositionName())
+                    .build());
+        }
+        return employeeDtos;
+    }
+
+    public Boolean authorize(Integer employeeId) {
+        Optional<Employee> optionalEmployee =  employeeRepository.findById(employeeId);
+        if(optionalEmployee.isEmpty()){
+            throw UserNotFoundException.forIdx(employeeId);
+        }
+        Employee employee = optionalEmployee.get();
+        employee.setStatus(true);
+        employeeRepository.save(employee);
+        return true;
+    }
+    public List<EmployeeDto> findAuthorize() {
+        List<EmployeeDto> employeeDtos = new ArrayList<>();
+        List<Employee> employeeList = employeeRepository.findAllByStatus(false);
+        for (Employee employee: employeeList) {
+            employeeDtos.add(EmployeeDto.builder()
+                    .id(employee.getId())
+                    .name(employee.getName())
+                    .employmentDate(employee.getEmploymentDate())
+                    .department(employee.getDepartment().getDepartmentName())
+                    .position(employee.getPosition().getPositionName())
+                    .build());
+        }
+        return employeeDtos;
+    }
+
+    public EmployeeDto readEmployee(Integer employeeId) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
+        if(employeeOptional.isEmpty()){
+            throw UserNotFoundException.forIdx(employeeId);
+        }
+        Employee employee = employeeOptional.get();
+        return EmployeeDto.builder()
+                .id(employee.getId())
+                .name(employee.getName())
+                .employmentDate(employee.getEmploymentDate())
+                .department(employee.getDepartment().getDepartmentName())
+                .position(employee.getPosition().getPositionName())
+                .build();
     }
 }

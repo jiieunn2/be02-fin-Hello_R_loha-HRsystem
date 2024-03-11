@@ -1,4 +1,4 @@
-package com.HelloRolha.HR.feature.department.model.dto;
+package com.HelloRolha.HR.feature.department.model.dto.create;
 
 import lombok.*;
 

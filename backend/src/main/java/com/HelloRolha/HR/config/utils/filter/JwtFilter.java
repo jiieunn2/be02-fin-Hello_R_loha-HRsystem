@@ -32,18 +32,19 @@ public class JwtFilter extends OncePerRequestFilter {
             String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
             String token;
+            //토큰 가져오기
             if (header != null && header.startsWith("Bearer ")) {
                 token = header.split(" ")[1];
             } else {
+                //토큰이 없으면
                 filterChain.doFilter(request, response);
                 return;
             }
-
+            // 토큰이 있다면
             String authority = JwtUtils.getAuthority(token, secretKey);
             Integer id = JwtUtils.getId(token, secretKey);
-            if (authority.equals("ROLE_USER") || authority.equals("ROLE_ADMIN")) {
-                String userEmail = JwtUtils.getUserEmail(token, secretKey);
-                if (userEmail != null) {
+            if (authority.equals("ROLE_USER") || authority.equals("ROLE_ADMIN") || authority.equals("ROLE_NEW")) {
+            // 토큰이 조작되었는지 확인하는 코드
                         // 인가하는 코드
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                                 Employee.builder().id(id).build(),
@@ -54,7 +55,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                         filterChain.doFilter(request, response);
                     }
-                }
+                
 
 
     }
