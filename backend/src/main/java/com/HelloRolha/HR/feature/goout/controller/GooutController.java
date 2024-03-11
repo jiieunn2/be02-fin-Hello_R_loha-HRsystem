@@ -2,7 +2,7 @@ package com.HelloRolha.HR.feature.goout.controller;
 
 import com.HelloRolha.HR.common.dto.BaseRes;
 import com.HelloRolha.HR.feature.goout.model.Goout;
-import com.HelloRolha.HR.feature.goout.model.entity.*;
+import com.HelloRolha.HR.feature.goout.model.dto.*;
 import com.HelloRolha.HR.feature.goout.service.GooutService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
