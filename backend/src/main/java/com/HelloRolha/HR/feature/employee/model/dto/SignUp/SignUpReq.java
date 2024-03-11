@@ -2,6 +2,7 @@ package com.HelloRolha.HR.feature.employee.model.dto.SignUp;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -15,7 +16,7 @@ public class SignUpReq {
     private String password;
     private String name;
     private String phoneNum;
-    private LocalDate birth;
+    private String birth;
     private String address;
     private Integer age;
     private Integer positionId;
