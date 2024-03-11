@@ -1,4 +1,4 @@
-package com.HelloRolha.HR.feature.goout.model.entity;
+package com.HelloRolha.HR.feature.goout.model.dto;
 
 import lombok.Data;
 

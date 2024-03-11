@@ -1,7 +1,7 @@
 package com.HelloRolha.HR.feature.goout.service;
 
 import com.HelloRolha.HR.feature.goout.model.GooutType;
-import com.HelloRolha.HR.feature.goout.model.entity.*;
+import com.HelloRolha.HR.feature.goout.model.dto.*;
 import com.HelloRolha.HR.feature.goout.repo.GooutTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
