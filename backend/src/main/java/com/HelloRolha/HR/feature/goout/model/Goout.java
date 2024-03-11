@@ -18,13 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Goout extends BaseEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Integer id;
     private LocalDateTime period;
     private Integer status;
-//    private Integer correctionTime;       >   BaseEntity
-//    private Integer createTime;           >   BaseEntity
 
 //  임시
 //    private Integer typeId;
@@ -38,6 +33,9 @@ public class Goout extends BaseEntity {
 
     @OneToMany(mappedBy = "goout")
     private List<GooutType> gooutTypes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "goout")
+    private List<GooutLine> gooutLines = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
