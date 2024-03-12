@@ -9,7 +9,11 @@ import javax.persistence.*;
 @Entity
 @Setter @Getter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
-public class ApproveFile extends FileBaseEntity {
+public class ApproveFile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String filename;
     private String title;
     private String content;
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "approve_id")
