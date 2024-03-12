@@ -27,7 +27,4 @@ public class GooutType extends BaseEntity {
     @OneToMany(mappedBy = "gooutType")
     private List<Goout> goouts = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Goout_id")
-    private Goout goout;
 }

@@ -104,7 +104,7 @@ public class GooutLineService {
         }
 
         gooutLine.setStatus(1);
-
+        gooutLine.setComment(gooutLineConfirm.getComment());
         gooutLine.setApplyTime(localDateTimeInKorea); // applyTime 설정
         gooutLineRepository.save(gooutLine); // 변경 사항 저장
 
@@ -123,7 +123,7 @@ public class GooutLineService {
         }
 
         gooutLine.setStatus(2);
-
+        gooutLine.setComment(gooutLineConfirm.getComment());
         gooutLine.setApplyTime(localDateTimeInKorea); // applyTime 설정
         gooutLineRepository.save(gooutLine); // 변경 사항 저장
     }

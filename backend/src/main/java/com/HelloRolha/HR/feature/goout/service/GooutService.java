@@ -58,7 +58,6 @@ public class GooutService {
 
 
         Goout goout = Goout.builder()
-                .period(gooutCreateReq.getPeriod())
                 .agent(agent)
                 .employee(employee)
                 .gooutType(gooutType)
@@ -86,7 +85,6 @@ public List<GooutList> list() {
                     .status(goout.getStatus())
                     .first(goout.getFirst())
                     .last(goout.getLast())
-                    .period(goout.getPeriod())
                     .build();
             gooutLists.add(gooutList);
         }
@@ -121,7 +119,6 @@ public List<GooutList> list() {
             }
 
             return GooutRead.builder()
-                    .period(goout.getPeriod())
                     .agentName(agent.getName())
                     .employeeName(employee.getName())
                     .gooutTypeName(gooutType.getName())
@@ -157,7 +154,6 @@ public List<GooutList> list() {
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 휴가타입이 존재하지 않습니다."));
 
         // 휴가/외출 정보 업데이트
-        goout.setPeriod(gooutUpdateReq.getPeriod());
         goout.setFirst(gooutUpdateReq.getFirst());
         goout.setLast(gooutUpdateReq.getLast());
         goout.setGooutType(gooutType);

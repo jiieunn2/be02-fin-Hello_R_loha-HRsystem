@@ -6,8 +6,6 @@ import com.HelloRolha.HR.feature.board.model.dto.BoardDto;
 import com.HelloRolha.HR.feature.board.model.dto.BoardListDto;
 import com.HelloRolha.HR.feature.board.service.BoardNotFoundException;
 import com.HelloRolha.HR.feature.board.service.BoardService;
-import com.HelloRolha.HR.feature.goout.model.Goout;
-import com.HelloRolha.HR.feature.goout.model.entity.GooutCreateReq;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
