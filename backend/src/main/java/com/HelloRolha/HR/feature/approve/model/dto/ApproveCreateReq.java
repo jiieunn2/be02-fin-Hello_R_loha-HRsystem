@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ApproveCreateReq {
-    private Integer id;
+    //private Integer id;
 
     private String content;
 
@@ -21,5 +21,5 @@ public class ApproveCreateReq {
 
     private String title;
 
-    private Integer employeeId;
+    //private Integer employeeId; // 작성자?
 }
