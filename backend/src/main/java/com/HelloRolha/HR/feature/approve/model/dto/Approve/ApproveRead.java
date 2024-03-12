@@ -1,4 +1,4 @@
-package com.HelloRolha.HR.feature.approve.model.dto;
+package com.HelloRolha.HR.feature.approve.model.dto.Approve;
 
 import lombok.Builder;
 import lombok.Data;
@@ -12,15 +12,11 @@ import java.util.List;
 @Data
 @Getter
 @Setter
-public class ApproveListRes {
+public class ApproveRead {
     private Integer id;
     private String title;
     private LocalDateTime createTime;
-    private int status;
-    private Boolean isSuccess;
-    private Integer code;
-    private String message;
-    private List<ApproveList> result;
-    private Boolean success;
+    private String content;
+
 
 }

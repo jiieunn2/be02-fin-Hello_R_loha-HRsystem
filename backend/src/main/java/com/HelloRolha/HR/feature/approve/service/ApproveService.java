@@ -1,8 +1,9 @@
 package com.HelloRolha.HR.feature.approve.service;
 
 import com.HelloRolha.HR.feature.approve.model.Approve;
+import com.HelloRolha.HR.feature.approve.model.ApproveFile;
 import com.HelloRolha.HR.feature.approve.model.ApproveLine;
-import com.HelloRolha.HR.feature.approve.model.dto.*;
+import com.HelloRolha.HR.feature.approve.model.dto.Approve.*;
 import com.HelloRolha.HR.feature.approve.repo.ApproveFileRepository;
 import com.HelloRolha.HR.feature.approve.repo.ApproveLineRepository;
 import com.HelloRolha.HR.feature.approve.repo.ApproveRepository;
@@ -11,6 +12,7 @@ import com.HelloRolha.HR.feature.employee.repo.EmployeeRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.patterns.IToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,85 +44,93 @@ public class ApproveService {
         Approve approve = Approve.builder()
                 .content(approveCreateReq.getContent())
                 .title(approveCreateReq.getTitle())
+                .status(0)
                 .build();
 
         Approve app = approveRepository.save(approve);
 
         return ApproveCreateRes.builder()
                 .id(app.getId())
+                .title(app.getTitle())
                 .content(app.getContent())
                 .status(app.getStatus())
-                .title(app.getTitle())
+                .createAt(approve.getCreateAt())
                 .build();
     }
 
     @Transactional
-    public ApproveListRes list() {
+    public List<ApproveList> list() {
         List<Approve> approves = approveRepository.findAll();
         List<ApproveList> approveLists = new ArrayList<>();
 
         for (Approve approve : approves) {
             Employee employee = approve.getEmployee();
-            if (employee == null) {
-                throw new RuntimeException("Employee 정보를 찾을 수 없습니다.");
-            }
-            // ApproveList 객체를 생성하고 필요한 정보를 설정합니다.
-            ApproveList approveList = new ApproveList();
-            approveList.setId(approve.getId());
-            approveList.setTitle(approve.getTitle());
-            approveList.setStatus(approve.getStatus());
-            approveList.setCreateTime(approve.getCreateAt());
-            // 여기에서 생성된 ApproveList 객체를 리스트에 추가합니다.
+            String employeeName = employee != null ? employee.getName() : "Unknown"; // Employee가 null이면 "Unknown"
+
+            ApproveList approveList = ApproveList.builder()
+                    .id(approve.getId())
+                    .name(employeeName) // Employee의 이름을 설정하거나, Employee가 null일 경우 "Unknown"
+                    .title(approve.getTitle())
+                    .content(approve.getContent())
+                    .createAt(approve.getCreateAt())
+                    .updateAt(approve.getUpdateAt())
+                    .status(approve.getStatus())
+                    .build();
+
             approveLists.add(approveList);
         }
 
-        // 최종적으로 생성된 approveLists를 포함하는 ApproveListRes 객체를 반환합니다.
-        return ApproveListRes.builder()
-                .code(1200)
-                .message("결재 목록 조회 성공")
-                .success(true)
-                .isSuccess(true)
-                .result(approveLists)
-                .build();
+
+        return approveLists;
     }
 
-    public ApproveReadRes read(Integer approveId) {
+
+
+    public ApproveRead read(Integer approveId) {
         Approve approve = approveRepository.findById(approveId)
                 .orElseThrow(() -> new RuntimeException("결재 정보를 찾을 수 없습니다."));
 
-        return ApproveReadRes.builder()
+        return ApproveRead.builder()
                 .id(approve.getId())
                 .title(approve.getTitle())
-                .status(approve.getStatus())
-                // 추가 필드에 대한 설정
+                .createTime(approve.getCreateAt())
+                .content(approve.getContent())
                 .build();
     }
 
 
     @Transactional
-    public ApproveUpdateRes update(Integer approveId, ApproveUpdate approveUpdate) {
-        Approve approve = approveRepository.findById(approveId)
+    public void update(ApproveUpdate approveUpdate) {
+        Approve approve = approveRepository.findById(approveUpdate.getId())
                 .orElseThrow(() -> new RuntimeException("결재 정보를 찾을 수 없습니다."));
+
+        if (approve.getStatus() != 3) {
+            throw new IllegalStateException("반려된 상태의 결재만 수정할 수 있습니다.");
+        }
 
         approve.setTitle(approveUpdate.getTitle());
         approve.setContent(approveUpdate.getContent());
-        // 필요한 필드에 대한 추가 업데이트 로직
         approveRepository.save(approve);
-
-        return ApproveUpdateRes.builder()
-                .title(approve.getTitle())
-                .content(approve.getContent())
-                // 추가 필드에 대한 설정
-                .build();
     }
 
     @Transactional
-    public Boolean delete(Integer approveId) {
+    public void returnStatus(Integer id, Integer approveLineId) {
+        ApproveLine approveLine = approveLineRepository.findById(approveLineId)
+                .orElseThrow(() -> new RuntimeException("해당 ID의 결재 라인 정보를 찾을 수 없습니다."));
+
+        Approve approve = approveRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당 ID의 결재 정보를 찾을 수 없습니다."));
+
+        approve.setStatus(approve.getStatus());
+        approveRepository.save(approve);
+    }
+
+    @Transactional
+    public void delete(Integer approveId) {
         Approve approve = approveRepository.findById(approveId)
                 .orElseThrow(() -> new RuntimeException("결재 정보를 찾을 수 없습니다."));
-
-        approveRepository.delete(approve);
-        return true;
+        approveFileRepository.deleteByApprove(approve); // ApproveFile 레코드 먼저 삭제
+        approveRepository.delete(approve); // 이후 Approve 레코드 삭제
     }
 
 
@@ -152,5 +161,12 @@ public class ApproveService {
 
 
         return s3.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
+    }
+
+    public void saveFile(Integer id, String uploadPath) {
+        approveFileRepository.save(ApproveFile.builder()
+                .approve(Approve.builder().id(id).build())
+                .filename(uploadPath)
+                .build());
     }
 }

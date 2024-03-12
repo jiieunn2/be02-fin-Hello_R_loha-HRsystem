@@ -1,10 +1,13 @@
-package com.HelloRolha.HR.feature.approve.model.dto;
+package com.HelloRolha.HR.feature.approve.model.dto.Approve;
 
 import com.HelloRolha.HR.feature.approve.model.ApproveFile;
 import com.HelloRolha.HR.feature.approve.model.ApproveLine;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.OneToMany;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApproveUpdate {
+    private Integer id;
 
     private String title;
 
     private String content;
 
-    private String filename;
+    private List<MultipartFile> newFiles;
 
-    @OneToMany(mappedBy = "approve")
-    private List<ApproveFile> approveFiles = new ArrayList<>();
+    private List<Integer> deleteFileIds;
 
-    @OneToMany(mappedBy = "approve")
-    private List<ApproveLine> approveLines = new ArrayList<>();
 }
