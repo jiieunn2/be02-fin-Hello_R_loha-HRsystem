@@ -1,13 +1,14 @@
 package com.HelloRolha.HR.feature.board.model;
 
+import com.HelloRolha.HR.feature.goout.model.GooutFile;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,7 +31,6 @@ public class Board {
         this.text = text;
         this.name = name;
         this.date = date;
-        //파일만 첨부하기
 
     }
     public void setDate(LocalDateTime dateTime) {
@@ -40,5 +40,8 @@ public class Board {
     public String getFormattedDate() {
         return date;
     }
+
+    @OneToMany(mappedBy = "board")
+    private List<BoardFile> boardFiles = new ArrayList<>();
 
 }

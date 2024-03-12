@@ -1,27 +1,48 @@
 package com.HelloRolha.HR.feature.board.controller;
 
+import com.HelloRolha.HR.common.dto.BaseRes;
+import com.HelloRolha.HR.feature.board.model.Board;
 import com.HelloRolha.HR.feature.board.model.dto.BoardDto;
 import com.HelloRolha.HR.feature.board.service.BoardNotFoundException;
 import com.HelloRolha.HR.feature.board.service.BoardService;
+import com.HelloRolha.HR.feature.goout.model.Goout;
+import com.HelloRolha.HR.feature.goout.model.entity.GooutCreateReq;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/board")
 @CrossOrigin("*")
 public class BoardController {
+
     BoardService boardService;
 
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity<Integer> create(@RequestBody BoardDto boardDto) {
-        Integer boardId = boardService.create(boardDto);
-        return ResponseEntity.ok().body(boardId);
+
+    @PostMapping("/create")
+    public ResponseEntity create(@RequestPart BoardDto boardDto,
+                                 @RequestPart MultipartFile[] uploadFiles) {
+        Board board = boardService.create(boardDto);
+
+        for (MultipartFile uploadFile : uploadFiles) {
+            String uploadPath = boardService.uploadFile(uploadFile);
+            boardService.saveFile(board.getId(), uploadPath);
+        }
+
+        BaseRes response = BaseRes.builder()
+                .code(1200)
+                .message("공지사항 생성 성공")
+                .isSuccess(true)
+                .result(board)
+                .build();
+        return ResponseEntity.ok().body(response);
     }
+
 
     @RequestMapping(method = RequestMethod.GET, value = "/read")
     public ResponseEntity read(Integer id) {
@@ -43,4 +64,5 @@ public class BoardController {
         boardService.delete(id);
         return ResponseEntity.ok().body("공지 사항이 성공적으로 삭제되었습니다.");
     }
+
 }
