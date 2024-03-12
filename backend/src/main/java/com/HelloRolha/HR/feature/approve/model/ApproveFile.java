@@ -12,7 +12,6 @@ import javax.persistence.*;
 public class ApproveFile extends FileBaseEntity {
     private String title;
     private String content;
-
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "approve_id")
     private Approve approve;
 

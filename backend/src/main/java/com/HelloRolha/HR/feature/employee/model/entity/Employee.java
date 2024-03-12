@@ -4,7 +4,7 @@ import com.HelloRolha.HR.feature.approve.model.Approve;
 import com.HelloRolha.HR.feature.commute.model.Commute;
 import com.HelloRolha.HR.feature.department.model.entity.Department;
 import com.HelloRolha.HR.feature.goout.model.Goout;
-import com.HelloRolha.HR.feature.goout.model.GooutFile;
+
 import com.HelloRolha.HR.feature.overtime.model.Overtime;
 import com.HelloRolha.HR.feature.position.model.entity.Position;
 

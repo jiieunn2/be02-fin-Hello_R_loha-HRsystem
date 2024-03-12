@@ -116,11 +116,12 @@ public class ApproveService {
     }
 
     @Transactional
-    public void delete(Integer approveId) {
+    public Boolean delete(Integer approveId) {
         Approve approve = approveRepository.findById(approveId)
                 .orElseThrow(() -> new RuntimeException("결재 정보를 찾을 수 없습니다."));
 
         approveRepository.delete(approve);
+        return true;
     }
 
 

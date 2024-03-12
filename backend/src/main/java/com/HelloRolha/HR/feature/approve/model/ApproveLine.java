@@ -15,14 +15,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApproveLine extends ApproveLineBaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    private String comment;
 
-    @ManyToOne @JoinColumn(name = "approve_id")
+    @ManyToOne
+    @JoinColumn(name = "approve_id")
     private Approve approve;
 
-    private int order;
+    //private int order; // 이거 어디다가 쓰는 거지?
 
 }
