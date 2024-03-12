@@ -27,6 +27,7 @@ public class GooutTypeController {
                 .code(1200)
                 .message("휴가타입 생성 성공")
                 .isSuccess(true)
+                .result(gooutTypeCreateReq)
                 .build();
         return ResponseEntity.ok(response);
     }
@@ -39,6 +40,7 @@ public class GooutTypeController {
                 .code(1200)
                 .message("휴가타입 list 읽기 성공")
                 .isSuccess(true)
+                .result(gooutTypeLists)
                 .build();
         return ResponseEntity.ok(response);
     }
@@ -51,6 +53,7 @@ public class GooutTypeController {
                 .code(1200)
                 .message("휴가타입 detail 읽기 성공")
                 .isSuccess(true)
+                .result(gooutTypeRead)
                 .build();
         return ResponseEntity.ok(response);
     }
@@ -63,6 +66,7 @@ public class GooutTypeController {
                 .code(1200)
                 .message("휴가타입 수정 성공")
                 .isSuccess(true)
+                .result(gooutTypeUpdateReq)
                 .build();
         return ResponseEntity.ok(response);
     }
@@ -75,6 +79,7 @@ public class GooutTypeController {
                 .code(1200)
                 .message("휴가타입 삭제 성공")
                 .isSuccess(true)
+                .result("삭제한 id : " + id)
                 .build();
         return ResponseEntity.ok(response);
     }

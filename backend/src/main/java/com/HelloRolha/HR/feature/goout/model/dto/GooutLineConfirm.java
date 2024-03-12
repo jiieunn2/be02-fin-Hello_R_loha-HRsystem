@@ -12,5 +12,4 @@ public class GooutLineConfirm {
     private Integer confirmer2Id;
     private Integer gooutId;
     private String comment;
-    private LocalDateTime applyTime;
 }
