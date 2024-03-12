@@ -131,18 +131,15 @@ public List<GooutList> list() {
     }
 
     @Transactional
-    public void returnStatus(Integer id, Integer status) {
+    public void returnStatus(Integer id, Integer gooutLineId) {
+        GooutLine gooutLine = gooutLineRepository.findById(gooutLineId)
+                .orElseThrow(() -> new RuntimeException("해당 ID의 휴가결재라인 정보를 찾을 수 없습니다."));
+
         Goout goout = gooutRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 휴가/외출 정보를 찾을 수 없습니다."));
 
-        goout.setStatus(status);
+        goout.setStatus(gooutLine.getStatus());
         gooutRepository.save(goout);
-
-        List<GooutLine> gooutLines = goout.getGooutLines();
-        for (GooutLine gooutLine : gooutLines) {
-            gooutLine.setStatus(status);  // 휴가의 상태를 결재라인에도 반영
-            gooutLineRepository.save(gooutLine);
-        }
     }
 
     @Transactional
