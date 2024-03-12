@@ -64,6 +64,7 @@ public class GooutService {
                 .gooutType(gooutType)
                 .first(gooutCreateReq.getFirst())
                 .last(gooutCreateReq.getLast())
+                .status(0)
                 .build();
 
         return gooutRepository.save(goout);
@@ -82,6 +83,7 @@ public List<GooutList> list() {
                     .id(goout.getId())
                     .name(employee.getName())
                     .gooutTypeName(gooutType.getName())
+                    .status(goout.getStatus())
                     .first(goout.getFirst())
                     .last(goout.getLast())
                     .period(goout.getPeriod())
@@ -123,9 +125,9 @@ public List<GooutList> list() {
                     .agentName(agent.getName())
                     .employeeName(employee.getName())
                     .gooutTypeName(gooutType.getName())
+                    .status(goout.getStatus())
                     .first(goout.getFirst())
                     .last(goout.getLast())
-                    .filename(filenames)
                     .build();
         }).orElse(null);
     }
@@ -161,23 +163,23 @@ public List<GooutList> list() {
         goout.setGooutType(gooutType);
         gooutRepository.save(goout);
 
-        // 첨부파일 추가
-        if (gooutUpdateReq.getNewFiles() != null) {
-            for (MultipartFile file : gooutUpdateReq.getNewFiles()) {
-                String uploadPath = uploadFile(file);
-                GooutFile gooutFile = new GooutFile();
-                gooutFile.setFilename(uploadPath);
-                gooutFile.setGoout(goout);
-                gooutFileRepository.save(gooutFile);
-            }
-        }
-
-        // 첨부파일 삭제
-        if (gooutUpdateReq.getDeleteFileIds() != null) {
-            for (Integer fileId : gooutUpdateReq.getDeleteFileIds()) {
-                gooutFileRepository.deleteById(fileId);
-            }
-        }
+//        // 첨부파일 추가
+//        if (gooutUpdateReq.getNewFiles() != null) {
+//            for (MultipartFile file : gooutUpdateReq.getNewFiles()) {
+//                String uploadPath = uploadFile(file);
+//                GooutFile gooutFile = new GooutFile();
+//                gooutFile.setFilename(uploadPath);
+//                gooutFile.setGoout(goout);
+//                gooutFileRepository.save(gooutFile);
+//            }
+//        }
+//
+//        // 첨부파일 삭제
+//        if (gooutUpdateReq.getDeleteFileIds() != null) {
+//            for (Integer fileId : gooutUpdateReq.getDeleteFileIds()) {
+//                gooutFileRepository.deleteById(fileId);
+//            }
+//        }
     }
 
     @Transactional
