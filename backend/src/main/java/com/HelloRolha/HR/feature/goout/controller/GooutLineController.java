@@ -29,6 +29,7 @@ public class GooutLineController {
                 .code(1200)
                 .message("휴가라인 생성 성공")
                 .isSuccess(true)
+                .result(gooutLineCreateReq)
                 .build();
         return ResponseEntity.ok(response);
     }
@@ -41,6 +42,7 @@ public class GooutLineController {
                     .code(1200)
                     .message("결재라인 목록 조회 성공")
                     .isSuccess(true)
+                    .result(gooutLineLists)
                     .build();
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -61,6 +63,7 @@ public class GooutLineController {
                     .code(1200)
                     .message("결재라인 상세 조회 성공")
                     .isSuccess(true)
+                    .result(gooutLineRead)
                     .build();
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -82,6 +85,7 @@ public class GooutLineController {
                     .code(1200)
                     .message("결재자1의 결재 처리 성공")
                     .isSuccess(true)
+                    .result(gooutLineConfirm)
                     .build();
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -109,6 +113,7 @@ public class GooutLineController {
                     .code(1200)
                     .message("결재자2의 결재 처리 성공")
                     .isSuccess(true)
+                    .result(gooutLineConfirm)
                     .build();
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -137,6 +142,7 @@ public class GooutLineController {
                     .code(1200)
                     .message("결재자1의 거절 처리 성공")
                     .isSuccess(true)
+                    .result(gooutLineConfirm)
                     .build();
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -157,7 +163,7 @@ public class GooutLineController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/reject2")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/reject2")
     public ResponseEntity<BaseRes> reject2(@RequestBody GooutLineConfirm gooutLineConfirm) {
         try {
             gooutLineService.reject2(gooutLineConfirm);
@@ -165,6 +171,7 @@ public class GooutLineController {
                     .code(1200)
                     .message("결재자2의 거절 처리 성공")
                     .isSuccess(true)
+                    .result(gooutLineConfirm)
                     .build();
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -184,7 +191,7 @@ public class GooutLineController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
     public ResponseEntity<BaseRes> delete(@PathVariable Integer id) {
         try {
             gooutLineService.delete(id);
@@ -192,6 +199,7 @@ public class GooutLineController {
                     .code(1200)
                     .message("결재라인 삭제 성공")
                     .isSuccess(true)
+                    .result("삭제한 id : " + id)
                     .build();
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {

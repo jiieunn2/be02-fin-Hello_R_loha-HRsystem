@@ -12,6 +12,7 @@ public class GooutList {
     private String name;
     private LocalDateTime period;
     private String gooutTypeName;
+    private Integer status;
     private LocalDateTime first;
     private LocalDateTime last;
 }

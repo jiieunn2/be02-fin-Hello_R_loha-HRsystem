@@ -12,8 +12,8 @@ public class GooutRead {
     private LocalDateTime period;
     private String agentName;
     private String employeeName;
-    private String filename;
     private String gooutTypeName;
+    private Integer status;
     private LocalDateTime first;
     private LocalDateTime last;
 }

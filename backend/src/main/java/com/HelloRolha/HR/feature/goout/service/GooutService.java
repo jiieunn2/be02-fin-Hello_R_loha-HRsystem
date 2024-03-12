@@ -64,6 +64,7 @@ public class GooutService {
                 .gooutType(gooutType)
                 .first(gooutCreateReq.getFirst())
                 .last(gooutCreateReq.getLast())
+                .status(0)
                 .build();
 
         return gooutRepository.save(goout);
@@ -82,6 +83,7 @@ public List<GooutList> list() {
                     .id(goout.getId())
                     .name(employee.getName())
                     .gooutTypeName(gooutType.getName())
+                    .status(goout.getStatus())
                     .first(goout.getFirst())
                     .last(goout.getLast())
                     .period(goout.getPeriod())
@@ -123,26 +125,23 @@ public List<GooutList> list() {
                     .agentName(agent.getName())
                     .employeeName(employee.getName())
                     .gooutTypeName(gooutType.getName())
+                    .status(goout.getStatus())
                     .first(goout.getFirst())
                     .last(goout.getLast())
-                    .filename(filenames)
                     .build();
         }).orElse(null);
     }
 
     @Transactional
-    public void returnStatus(Integer id, Integer status) {
+    public void returnStatus(Integer id, Integer gooutLineId) {
+        GooutLine gooutLine = gooutLineRepository.findById(gooutLineId)
+                .orElseThrow(() -> new RuntimeException("해당 ID의 휴가결재라인 정보를 찾을 수 없습니다."));
+
         Goout goout = gooutRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 휴가/외출 정보를 찾을 수 없습니다."));
 
-        goout.setStatus(status);
+        goout.setStatus(gooutLine.getStatus());
         gooutRepository.save(goout);
-
-        List<GooutLine> gooutLines = goout.getGooutLines();
-        for (GooutLine gooutLine : gooutLines) {
-            gooutLine.setStatus(status);  // 휴가의 상태를 결재라인에도 반영
-            gooutLineRepository.save(gooutLine);
-        }
     }
 
     @Transactional
@@ -164,23 +163,23 @@ public List<GooutList> list() {
         goout.setGooutType(gooutType);
         gooutRepository.save(goout);
 
-        // 첨부파일 추가
-        if (gooutUpdateReq.getNewFiles() != null) {
-            for (MultipartFile file : gooutUpdateReq.getNewFiles()) {
-                String uploadPath = uploadFile(file);
-                GooutFile gooutFile = new GooutFile();
-                gooutFile.setFilename(uploadPath);
-                gooutFile.setGoout(goout);
-                gooutFileRepository.save(gooutFile);
-            }
-        }
-
-        // 첨부파일 삭제
-        if (gooutUpdateReq.getDeleteFileIds() != null) {
-            for (Integer fileId : gooutUpdateReq.getDeleteFileIds()) {
-                gooutFileRepository.deleteById(fileId);
-            }
-        }
+//        // 첨부파일 추가
+//        if (gooutUpdateReq.getNewFiles() != null) {
+//            for (MultipartFile file : gooutUpdateReq.getNewFiles()) {
+//                String uploadPath = uploadFile(file);
+//                GooutFile gooutFile = new GooutFile();
+//                gooutFile.setFilename(uploadPath);
+//                gooutFile.setGoout(goout);
+//                gooutFileRepository.save(gooutFile);
+//            }
+//        }
+//
+//        // 첨부파일 삭제
+//        if (gooutUpdateReq.getDeleteFileIds() != null) {
+//            for (Integer fileId : gooutUpdateReq.getDeleteFileIds()) {
+//                gooutFileRepository.deleteById(fileId);
+//            }
+//        }
     }
 
     @Transactional
