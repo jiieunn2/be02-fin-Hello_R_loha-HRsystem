@@ -5,6 +5,7 @@ package com.HelloRolha.HR.feature.board.service;
 import com.HelloRolha.HR.feature.board.model.Board;
 import com.HelloRolha.HR.feature.board.model.BoardFile;
 import com.HelloRolha.HR.feature.board.model.dto.BoardDto;
+import com.HelloRolha.HR.feature.board.model.dto.BoardListDto;
 import com.HelloRolha.HR.feature.board.repository.BoardFileRepository;
 import com.HelloRolha.HR.feature.board.repository.BoardRepository;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
@@ -24,6 +25,8 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,7 +58,29 @@ public class BoardService {
         // 파일 처리를 여기서 수행
 
         return boardRepository.save(board);
+
     }
+
+    public List<BoardListDto> list() {
+        List<Board> boards = boardRepository.findAll();
+        List<BoardListDto> boardListDtos = new ArrayList<>();
+
+        for (Board board : boards) {
+            if (board != null) {
+                BoardListDto boardListDto = BoardListDto.builder()
+                        .id(board.getId())
+                        .name(board.getName())
+                        .text(board.getText())
+//                      .filename(boardListDtos)
+                        .title(board.getTitle())
+                        .date(board.getDate())
+                        .build();
+                boardListDtos.add(boardListDto);
+            }
+        }
+        return boardListDtos;
+    }
+
 
 
     public BoardDto read(Integer id) {

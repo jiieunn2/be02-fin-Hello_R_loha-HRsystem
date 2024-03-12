@@ -3,6 +3,7 @@ package com.HelloRolha.HR.feature.board.controller;
 import com.HelloRolha.HR.common.dto.BaseRes;
 import com.HelloRolha.HR.feature.board.model.Board;
 import com.HelloRolha.HR.feature.board.model.dto.BoardDto;
+import com.HelloRolha.HR.feature.board.model.dto.BoardListDto;
 import com.HelloRolha.HR.feature.board.service.BoardNotFoundException;
 import com.HelloRolha.HR.feature.board.service.BoardService;
 import com.HelloRolha.HR.feature.goout.model.Goout;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/board")
@@ -39,6 +42,18 @@ public class BoardController {
                 .message("공지사항 생성 성공")
                 .isSuccess(true)
                 .result(board)
+                .build();
+        return ResponseEntity.ok().body(response);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/check")
+    public ResponseEntity<BaseRes> list() {
+        List<BoardListDto> boardLists = boardService.list();
+        BaseRes response = BaseRes.builder()
+                .code(1200)
+                .message("공지사항 확인 성공")
+                .isSuccess(true)
+                .result(boardLists)
                 .build();
         return ResponseEntity.ok().body(response);
     }
