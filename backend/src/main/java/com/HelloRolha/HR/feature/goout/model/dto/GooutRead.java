@@ -13,14 +13,7 @@ public class GooutRead {
     private String agentName;
     private String employeeName;
     private String filename;
-
-    //임시
-    //private Integer remainingVacationDays;
-    //private String position;
-//    private Integer typeId;
-    private String type;
+    private String gooutTypeName;
     private LocalDateTime first;
     private LocalDateTime last;
-    //임시
-
 }

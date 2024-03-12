@@ -14,7 +14,7 @@ public class GooutUpdateReq {
     private LocalDateTime period;
     private LocalDateTime first;
     private LocalDateTime last;
+    private Integer gooutTypeId;
     private List<MultipartFile> newFiles;  // 추가할 파일들
     private List<Integer> deleteFileIds;   // 삭제할 파일의 ID들
-
 }
