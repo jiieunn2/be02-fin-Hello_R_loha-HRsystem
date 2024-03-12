@@ -21,18 +21,11 @@ public class Goout extends BaseEntity {
     private LocalDateTime period;
     private Integer status;
 
-//  임시
-//    private Integer typeId;
-    private String type;
     private LocalDateTime first;
     private LocalDateTime last;
-//  임시
 
     @OneToMany(mappedBy = "goout")
     private List<GooutFile> gooutFiles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "goout")
-    private List<GooutType> gooutTypes = new ArrayList<>();
 
     @OneToMany(mappedBy = "goout")
     private List<GooutLine> gooutLines = new ArrayList<>();
@@ -44,4 +37,8 @@ public class Goout extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "agent_id")
     private Employee agent;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "gooutType_id")
+    private GooutType gooutType;
 }
