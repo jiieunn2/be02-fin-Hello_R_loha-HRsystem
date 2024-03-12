@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
-@Getter
 public class BoardDto {
     private final Integer id;
     private final String name;
