@@ -61,6 +61,7 @@ public class EmployeeService {
         Employee employee = result.get();
         if (passwordEncoder.matches(loginReq.getPassword(), employee.getPassword()) && employee.getStatus().equals(true)) {
             return LoginRes.builder()
+                    .name(employee.getName())
                     .token(JwtUtils.generateAccessToken(employee, secretKey, expiredTimeMs))
                     .build();
 
