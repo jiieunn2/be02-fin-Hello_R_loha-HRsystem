@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class CommuteService {
     }
 
 
-    public CommuteDto check() {
+    public Boolean check() {
         Employee employee = ((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         List<Commute> Commutes = commuteRepository.findAllByEmployee(employee);
@@ -84,15 +85,25 @@ public class CommuteService {
         }
         Commute lastCommute = Commutes.get(Commutes.size()-1);
 //        1.시작 시간이 오늘인지 확인 -- > 어제 날짜면 출근 안함?
+        LocalDate today = LocalDate.now();
+        LocalDate dateTimeDate = lastCommute.getCreateAt().toLocalDate();
+        if(dateTimeDate.equals(today)){
+            // 오늘 출근했음.
+            if(lastCommute.getSumTime() != null){
+                // 퇴근한 상태
+                return false;
+            }
+            else {
+                // 출근하고 퇴근은 안한 상태
+                return true;
+            }
+        }
+        else {
+            // 오늘 출근 안한 상태
+            return false;
+        }
 //        2.업데이트 시간이 있는지 확인
 //        3. 업데이트 시간이 있으면 퇴큰
 //나중에 sql문으로 1개만 가져오게 만들 수 있음.
-
-        return CommuteDto.builder()
-                .id(lastCommute.getId())
-                .startTime(lastCommute.getCreateAt())
-                .endTime(lastCommute.getUpdateAt())
-                .sumTime(lastCommute.getSumTime())
-                .build();
     }
 }
