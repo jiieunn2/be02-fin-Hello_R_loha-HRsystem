@@ -1,6 +1,7 @@
 package com.HelloRolha.HR.feature.commute.service;
 
 
+import com.HelloRolha.HR.error.exception.AlreadyCommuteException;
 import com.HelloRolha.HR.error.exception.CommuteNotFoundException;
 import com.HelloRolha.HR.feature.commute.model.Commute;
 import com.HelloRolha.HR.feature.commute.model.dto.CommuteCheckRes;
@@ -17,6 +18,7 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -30,7 +32,10 @@ public class CommuteService {
         //자신의 id를 가져오는 법
         Employee employee = ((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-        //Todo 오늘 출근을 안 상태라면 못해야한다.
+        //오늘 출근을 한 상태라면 못해야한다.
+        if(todayCheck(employee)){
+            throw AlreadyCommuteException.alreadyCommuteException();
+        }
 
         Commute commute = Commute.builder()
                 .employee(employee)
@@ -75,6 +80,24 @@ public class CommuteService {
                 .build();
     }
 
+    public Boolean todayCheck(Employee employee) {
+
+        List<Commute> Commutes = commuteRepository.findAllByEmployee(employee);
+        //null일 경우
+        if(Commutes.isEmpty()){
+            return false;
+        }
+        Commute lastCommute = Commutes.get(Commutes.size()-1);
+//        1.시작 시간이 오늘인지 확인 -- > 어제 날짜면 출근 안함?
+        LocalDate today = LocalDate.now();
+        LocalDate dateTimeDate = lastCommute.getCreateAt().toLocalDate();
+
+        if(dateTimeDate.equals(today)){
+            return true; //오늘 출근 함
+        }
+        return false; // 오늘 출근 안함.
+
+    }
 
     public CommuteCheckRes check() {
         Employee employee = ((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -88,28 +111,30 @@ public class CommuteService {
 //        1.시작 시간이 오늘인지 확인 -- > 어제 날짜면 출근 안함?
         LocalDate today = LocalDate.now();
         LocalDate dateTimeDate = lastCommute.getCreateAt().toLocalDate();
-        Boolean checkResult = false;
+        Boolean isCommute = false;
+        Boolean isLeave = true;
         if(dateTimeDate.equals(today)){
+            isCommute = true;
             // 오늘 출근했음.
-            if(lastCommute.getSumTime() != null){
-                // 퇴근한 상태
-                checkResult = false;
-
-            }
-            else {
+            if(lastCommute.getSumTime() == null){
                 // 출근하고 퇴근은 안한 상태
-                checkResult =  true;
+                isLeave =  false;
+                lastCommute.setSumTime("오늘도 화이팅!");
             }
         }
-        else {
-            // 오늘 출근 안한 상태
-            checkResult = false;
-        }
+
+
 //        2.업데이트 시간이 있는지 확인
 //        3. 업데이트 시간이 있으면 퇴큰
 //나중에 sql문으로 1개만 가져오게 만들 수 있음.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return CommuteCheckRes.builder()
                 .id(lastCommute.getId())
-                .isCommute(checkResult).build();
+                .isCommute(isCommute)
+                .isLeave(isLeave)
+                .startTime(lastCommute.getCreateAt().format(formatter))
+                .endTime(lastCommute.getUpdateAt().format(formatter))
+                .sumTime(lastCommute.getSumTime())
+                .build();
     }
 }

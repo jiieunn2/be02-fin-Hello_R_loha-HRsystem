@@ -54,7 +54,8 @@ public enum ErrorCode {
 
     // 카테고리
     DUPLICATE_CATEGORY_NAME(HttpStatus.BAD_REQUEST, "CATEGORY-001", "카테고리 이름이 중복된 경우"),
-    CATEGORY_NOT_EXISTS(HttpStatus.NOT_FOUND, "CATEGORY-002", "카테고리를 찾을 수 없는 경우");
+    CATEGORY_NOT_EXISTS(HttpStatus.NOT_FOUND, "CATEGORY-002", "카테고리를 찾을 수 없는 경우"), 
+    AlreadyCommute(HttpStatus.BAD_REQUEST, "COMMUTE-001", "한 사람이 같은 날짜에 출근할 경우");
 
 
 
