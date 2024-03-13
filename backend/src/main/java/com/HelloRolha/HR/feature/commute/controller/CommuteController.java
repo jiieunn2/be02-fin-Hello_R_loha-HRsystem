@@ -30,7 +30,7 @@ public class CommuteController {
         return ResponseEntity.ok().body(res);
     }
 
-    @GetMapping("/check")
+    @GetMapping("/commute/check")
     public ResponseEntity<BaseRes> check() {
 
         BaseRes res = BaseRes.builder()
