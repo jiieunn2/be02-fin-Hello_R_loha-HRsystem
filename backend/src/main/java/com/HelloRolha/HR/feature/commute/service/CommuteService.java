@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,9 @@ public class CommuteService {
     public CommuteDto commute() {
         //자신의 id를 가져오는 법
         Employee employee = ((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+        //Todo 오늘 출근을 안 상태라면 못해야한다.
+
         Commute commute = Commute.builder()
                 .employee(employee)
                 .build();
@@ -70,4 +74,25 @@ public class CommuteService {
     }
 
 
+    public CommuteDto check() {
+        Employee employee = ((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+        List<Commute> Commutes = commuteRepository.findAllByEmployee(employee);
+        //        null일 경우
+        if(Commutes.isEmpty()){
+            throw new CommuteNotFoundException("");
+        }
+        Commute lastCommute = Commutes.get(Commutes.size()-1);
+//        1.시작 시간이 오늘인지 확인 -- > 어제 날짜면 출근 안함?
+//        2.업데이트 시간이 있는지 확인
+//        3. 업데이트 시간이 있으면 퇴큰
+//나중에 sql문으로 1개만 가져오게 만들 수 있음.
+
+        return CommuteDto.builder()
+                .id(lastCommute.getId())
+                .startTime(lastCommute.getCreateAt())
+                .endTime(lastCommute.getUpdateAt())
+                .sumTime(lastCommute.getSumTime())
+                .build();
+    }
 }

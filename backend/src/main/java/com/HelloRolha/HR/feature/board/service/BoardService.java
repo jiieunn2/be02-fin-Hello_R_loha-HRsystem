@@ -11,7 +11,7 @@ import com.HelloRolha.HR.feature.board.repository.BoardRepository;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import com.HelloRolha.HR.feature.goout.model.Goout;
 import com.HelloRolha.HR.feature.goout.model.GooutFile;
-import com.HelloRolha.HR.feature.goout.model.entity.GooutCreateReq;
+
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
