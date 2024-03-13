@@ -3,6 +3,7 @@ package com.HelloRolha.HR.feature.commute.service;
 
 import com.HelloRolha.HR.error.exception.CommuteNotFoundException;
 import com.HelloRolha.HR.feature.commute.model.Commute;
+import com.HelloRolha.HR.feature.commute.model.dto.CommuteCheckRes;
 import com.HelloRolha.HR.feature.commute.model.dto.CommuteDto;
 import com.HelloRolha.HR.feature.commute.repository.CommuteRepository;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
@@ -75,7 +76,7 @@ public class CommuteService {
     }
 
 
-    public Boolean check() {
+    public CommuteCheckRes check() {
         Employee employee = ((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         List<Commute> Commutes = commuteRepository.findAllByEmployee(employee);
@@ -87,23 +88,28 @@ public class CommuteService {
 //        1.시작 시간이 오늘인지 확인 -- > 어제 날짜면 출근 안함?
         LocalDate today = LocalDate.now();
         LocalDate dateTimeDate = lastCommute.getCreateAt().toLocalDate();
+        Boolean checkResult = false;
         if(dateTimeDate.equals(today)){
             // 오늘 출근했음.
             if(lastCommute.getSumTime() != null){
                 // 퇴근한 상태
-                return false;
+                checkResult = false;
+
             }
             else {
                 // 출근하고 퇴근은 안한 상태
-                return true;
+                checkResult =  true;
             }
         }
         else {
             // 오늘 출근 안한 상태
-            return false;
+            checkResult = false;
         }
 //        2.업데이트 시간이 있는지 확인
 //        3. 업데이트 시간이 있으면 퇴큰
 //나중에 sql문으로 1개만 가져오게 만들 수 있음.
+        return CommuteCheckRes.builder()
+                .id(lastCommute.getId())
+                .isCommute(checkResult).build();
     }
 }
