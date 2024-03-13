@@ -40,8 +40,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
-            // 토큰이 있다면
+            // 토큰이 있다면 유효한 토큰인지 확인한다.
+
             String authority = JwtUtils.getAuthority(token, secretKey);
+
             Integer id = JwtUtils.getId(token, secretKey);
             if (authority.equals("ROLE_USER") || authority.equals("ROLE_ADMIN") || authority.equals("ROLE_NEW")) {
             // 토큰이 조작되었는지 확인하는 코드
