@@ -18,8 +18,6 @@ public class GooutTypeService {
                 .name(gooutTypeCreateReq.getName())
                 .detail(gooutTypeCreateReq.getDetail())
                 .maxHoliday(gooutTypeCreateReq.getMaxHoliday())
-                .includesWeekends(gooutTypeCreateReq.isIncludesWeekends())
-                .expiresAtYearEnd(gooutTypeCreateReq.isExpiresAtYearEnd())
                 .build();
 
         return gooutTypeRepository.save(gooutType);
@@ -46,8 +44,6 @@ public class GooutTypeService {
                 .name(gooutType.getName())
                 .detail(gooutType.getDetail())
                 .maxHoliday(gooutType.getMaxHoliday())
-                .includesWeekends(gooutType.isIncludesWeekends())
-                .expiresAtYearEnd(gooutType.isExpiresAtYearEnd())
                 .build();
     }
 
@@ -58,8 +54,6 @@ public class GooutTypeService {
         gooutType.setName(gooutTypeUpdateReq.getName());
         gooutType.setDetail(gooutTypeUpdateReq.getDetail());
         gooutType.setMaxHoliday(gooutTypeUpdateReq.getMaxHoliday());
-        gooutType.setIncludesWeekends(gooutTypeUpdateReq.isIncludesWeekends());
-        gooutType.setExpiresAtYearEnd(gooutTypeUpdateReq.isExpiresAtYearEnd());
 
         return gooutTypeRepository.save(gooutType);
     }

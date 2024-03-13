@@ -6,5 +6,6 @@ import lombok.Data;
 @Builder
 @Data
 public class GooutTypeList {
+    private Integer id;
     private String name;
 }

@@ -3,16 +3,15 @@ package com.HelloRolha.HR.feature.goout.model.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 @Data
 public class GooutCreateReq {
-    private LocalDateTime period;
     private Integer agentId;
     private Integer employeeId;
     private Integer gooutTypeId;
-    private LocalDateTime first;
-    private LocalDateTime last;
+    private LocalDate first;
+    private LocalDate last;
     //
 }

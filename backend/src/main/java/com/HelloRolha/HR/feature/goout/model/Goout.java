@@ -7,7 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Goout extends BaseEntity {
-    private LocalDateTime period;
     private Integer status;
 
-    private LocalDateTime first;
-    private LocalDateTime last;
+    private LocalDate first;
+    private LocalDate last;
 
     @OneToMany(mappedBy = "goout")
     private List<GooutFile> gooutFiles = new ArrayList<>();
