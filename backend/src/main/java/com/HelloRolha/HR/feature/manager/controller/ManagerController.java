@@ -4,9 +4,12 @@ import com.HelloRolha.HR.common.dto.BaseRes;
 import com.HelloRolha.HR.feature.employee.model.dto.SignUp.SignUpReq;
 import com.HelloRolha.HR.feature.employee.service.EmployeeService;
 import com.HelloRolha.HR.feature.manager.service.ManagerService;
+import com.HelloRolha.HR.feature.salary.service.SalaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @CrossOrigin("*")
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ManagerController {
     private final ManagerService managerService;
+    private final SalaryService salaryService;
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/authorize/{employeeId}")
     public ResponseEntity authorize(@PathVariable Integer employeeId) {
@@ -70,7 +74,20 @@ public class ManagerController {
 
         return ResponseEntity.ok().body(res);
     }
+    @RequestMapping(method = RequestMethod.GET, value = "/salary")
+    public ResponseEntity salary() {
+        LocalDate startDate =LocalDate.parse("2024-01-01");
+        LocalDate endDate =LocalDate.parse("2024-01-31");
+        BaseRes res = BaseRes.builder()
+                .code(200)
+                .isSuccess(true)
+                .message("직원 정보 성공")
+                .result(salaryService.getSalaryList(startDate,endDate))
+                .build();
 
+
+        return ResponseEntity.ok().body(res);
+    }
 
 //    @RequestMapping(method = RequestMethod.GET, value = "/attend")
 //    public ResponseEntity<BaseRes> listCommute() {

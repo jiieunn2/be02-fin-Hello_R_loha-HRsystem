@@ -50,7 +50,8 @@ public class Employee extends BaseEntity implements UserDetails {
     private String birth;
     private String address;
     private Integer age;
-
+    @ColumnDefault("5000000")
+    private Long salary;
     //외래키
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Department_id")
@@ -58,6 +59,7 @@ public class Employee extends BaseEntity implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Position_id")
     private Position position;
+
 
     // 사용 기능들
     @OneToMany(mappedBy = "employee")
