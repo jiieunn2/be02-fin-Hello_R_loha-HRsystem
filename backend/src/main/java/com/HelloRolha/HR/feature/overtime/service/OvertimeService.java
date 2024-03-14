@@ -99,4 +99,35 @@ public class OvertimeService {
         overtimeRepository.save(overtime);
     }
 
+
+    public Long getOverTime(LocalDate startDate, LocalDate endDate, EmployeeDto employee) {
+        List<Overtime> overtimeList = overtimeRepository.findAllByEmployee(Employee.builder().id(employee.getId()).build());
+
+        //Todo 예외 처리 : 결과가 비어있다면
+        Long totalMinutes = 0L;
+        for(Overtime overtime:overtimeList){
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate overtimeDate = LocalDate.parse(overtime.getDate(), formatter);
+
+            if(overtimeDate.isAfter(startDate) && overtimeDate.isBefore(endDate)){
+
+                LocalTime startTime = LocalTime.parse(overtime.getEndTime());
+                LocalTime endTime = LocalTime.parse(overtime.getStartTime());
+                // 시작 시간과 종료 시간의 Duration 계산
+                Duration duration = Duration.between(startTime, endTime);
+
+                // 총 업무 시간 계산
+                totalMinutes += duration.toMinutes();
+
+            }
+        }
+//        long hours = totalMinutes / 60; // 시간 계산
+//        long minutes = totalMinutes % 60; // 분 계산
+
+        // 시간과 분을 문자열로 결합하여 sumTime에 저장
+//        String sumTime = String.format("%d h %d m", hours, minutes);
+        return totalMinutes / 60;
+    }
+
 }
