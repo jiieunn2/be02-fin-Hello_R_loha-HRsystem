@@ -1,6 +1,8 @@
 package com.HelloRolha.HR.feature.goout.service;
 
 
+import com.HelloRolha.HR.feature.commute.model.Commute;
+import com.HelloRolha.HR.feature.employee.model.dto.EmployeeDto;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import com.HelloRolha.HR.feature.employee.repo.EmployeeRepository;
 import com.HelloRolha.HR.feature.goout.model.Goout;
@@ -231,4 +233,25 @@ public List<GooutList> list() {
                 .build());
     }
 
+    public Integer getPaidVacationCount(LocalDate startDate, LocalDate endDate, EmployeeDto employee) {
+        Integer counter = 0;
+        //Todo 비효율적인 쿼리임. 바꿀 수 있으면 바꾸자.
+        //sql 문을 month 에 맞는 데이터만 가져오도록 만들 수 있다.
+        List<Goout> gooutList = gooutRepository.findAllByEmployee(Employee.builder().id(employee.getId()).build());
+        if(gooutList.isEmpty()){
+
+            System.out.println("오류 예외 처리해라");
+            return 0;
+        }
+
+        for (Goout goout:gooutList){
+            //휴가 출발일부터 마지막 날까지 반복,  월급을 계산하는 날 사이에 있다면
+            for(LocalDate date = goout.getFirst(); !date.isEqual(goout.getLast()) ;date=date.plusDays(1)){
+                if( date.isAfter(startDate) && date.isBefore(endDate)){
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
 }

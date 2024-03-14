@@ -81,6 +81,7 @@ public class EmployeeService {
                     .employmentDate(employee.getEmploymentDate())
                     .department(employee.getDepartment().getDepartmentName())
                     .position(employee.getPosition().getPositionName())
+                            .salary(employee.getSalary())
                     .build());
         }
         return employeeDtos;
