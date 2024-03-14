@@ -212,6 +212,18 @@ public class GooutLineController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update")
+    public ResponseEntity<BaseRes> update(@RequestBody GooutLineUpdateReq gooutLineUpdateReq) {
+        gooutLineService.update(gooutLineUpdateReq);
+        BaseRes response = BaseRes.builder()
+                .code(1200)
+                .message("휴가/외출 정보 수정 성공")
+                .isSuccess(true)
+                .result(gooutLineUpdateReq)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
     public ResponseEntity<BaseRes> delete(@PathVariable Integer id) {
         try {

@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 @Data
 public class GooutLineRead {
     private Integer confirmer1Id;
+    private String confirmer1Name;
     private Integer confirmer2Id;
+    private String confirmer2Name;
     private Integer gooutId;
     private String comment;
     private LocalDateTime approveTime;
