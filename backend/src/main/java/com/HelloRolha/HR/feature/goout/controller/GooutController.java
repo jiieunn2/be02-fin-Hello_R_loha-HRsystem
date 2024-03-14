@@ -34,7 +34,7 @@ public class GooutController {
                 .code(1200)
                 .message("휴가/외출 신청 성공")
                 .isSuccess(true)
-                .result(gooutCreateReq)
+                .result(goout.getId())
                 .build();
         return ResponseEntity.ok().body(response);
     }
