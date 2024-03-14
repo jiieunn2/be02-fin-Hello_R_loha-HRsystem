@@ -22,19 +22,20 @@ public class GooutController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity create(@RequestPart GooutCreateReq gooutCreateReq,
-                                 @RequestPart MultipartFile[] uploadFiles) {
+                                 @RequestPart(name = "uploadFiles", required = false) MultipartFile[] uploadFiles) {
         Goout goout = gooutService.create(gooutCreateReq);
-
-        for (MultipartFile uploadFile:uploadFiles) {
-            String uploadPath = gooutService.uploadFile(uploadFile);
-            gooutService.saveFile(goout.getId(), uploadPath);
+        if (uploadFiles != null) {
+            for (MultipartFile uploadFile : uploadFiles) {
+                String uploadPath = gooutService.uploadFile(uploadFile);
+                gooutService.saveFile(goout.getId(), uploadPath);
+            }
         }
 
         BaseRes response = BaseRes.builder()
                 .code(1200)
                 .message("휴가/외출 신청 성공")
                 .isSuccess(true)
-                .result(gooutCreateReq)
+                .result(goout.getId())
                 .build();
         return ResponseEntity.ok().body(response);
     }

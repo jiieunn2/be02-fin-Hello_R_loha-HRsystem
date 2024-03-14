@@ -76,6 +76,27 @@ public class GooutLineController {
         }
     }
 
+    //결재id로 결재라인 조회하기
+    @RequestMapping(method = RequestMethod.GET, value = "/2/{id}")
+    public ResponseEntity<BaseRes> read2(@PathVariable Integer id) {
+        try {
+            GooutLineRead gooutLineRead = gooutLineService.read2(id);
+            BaseRes response = BaseRes.builder()
+                    .code(1200)
+                    .message("결재라인 상세 조회2 성공")
+                    .isSuccess(true)
+                    .result(gooutLineRead)
+                    .build();
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            BaseRes response = BaseRes.builder()
+                    .code(1400)
+                    .message("결재라인 상세2 조회 실패: " + e.getMessage())
+                    .isSuccess(false)
+                    .build();
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/confirm1")
     public ResponseEntity<BaseRes> confirm1(@RequestBody GooutLineConfirm gooutLineConfirm) {
@@ -189,6 +210,18 @@ public class GooutLineController {
                     .build();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update")
+    public ResponseEntity<BaseRes> update(@RequestBody GooutLineUpdateReq gooutLineUpdateReq) {
+        gooutLineService.update(gooutLineUpdateReq);
+        BaseRes response = BaseRes.builder()
+                .code(1200)
+                .message("휴가/외출 정보 수정 성공")
+                .isSuccess(true)
+                .result(gooutLineUpdateReq)
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
