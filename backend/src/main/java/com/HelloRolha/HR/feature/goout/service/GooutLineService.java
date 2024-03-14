@@ -90,6 +90,22 @@ public class GooutLineService {
                 .build();
     }
 
+    //결재id로 결재라인 조회하기
+    public GooutLineRead read2(Integer id) {
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
+
+        return GooutLineRead.builder()
+                .confirmer1Id(gooutLine.getConfirmer1().getId())
+                .confirmer2Id(gooutLine.getConfirmer2().getId())
+                .gooutId(gooutLine.getGoout().getId())
+                .comment(gooutLine.getComment())
+                .approveTime(gooutLine.getApproveTime())
+                .applyTime(gooutLine.getApplyTime())
+                .status(gooutLine.getStatus())
+                .build();
+    }
+
 
     public void confirm1(GooutLineConfirm gooutLineConfirm) {
         GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
