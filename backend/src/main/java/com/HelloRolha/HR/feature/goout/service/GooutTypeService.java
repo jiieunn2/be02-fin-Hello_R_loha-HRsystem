@@ -29,6 +29,7 @@ public class GooutTypeService {
 
         for (GooutType gooutType : gooutTypes) {
             GooutTypeList gooutTypeList = GooutTypeList.builder()
+                    .id(gooutType.getId())
                     .name(gooutType.getName())
                     .build();
             gooutTypeLists.add(gooutTypeList);
