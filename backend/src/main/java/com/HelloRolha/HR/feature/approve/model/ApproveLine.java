@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ApproveLine extends ApproveLineBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

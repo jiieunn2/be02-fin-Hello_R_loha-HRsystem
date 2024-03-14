@@ -17,6 +17,7 @@ public class ApproveRead {
     private String title;
     private LocalDateTime createTime;
     private String content;
-
+    private String confirmer1; // confirmer1 필드 추가
+    private String confirmer2; // confirmer2 필드 추가
 
 }
