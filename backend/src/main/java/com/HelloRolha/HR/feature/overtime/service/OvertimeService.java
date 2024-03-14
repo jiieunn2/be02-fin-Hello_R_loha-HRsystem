@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,58 +27,76 @@ public class OvertimeService {
         this.overtimeRepository = overtimeRepository;
     }
 
-    public Overtime processOvertimeRequest(OvertimeDto overtimeDto) { //초과 근무 신청
+    public Overtime processOvertimeRequest(OvertimeDto overtimeDto) {
         Overtime overtime = Overtime.builder()
                 .date(overtimeDto.getDate())
                 .shift(overtimeDto.getShift())
                 .startTime(overtimeDto.getStartTime())
                 .endTime(overtimeDto.getEndTime())
                 .reason(overtimeDto.getReason())
+                .status("대기 중")
                 .build();
 
         return overtimeRepository.save(overtime);
     }
 
-    public void update(OvertimeDto overtimeDto) { //수정
-        Optional<Overtime> result = overtimeRepository.findById(overtimeDto.getId());
+    public List<OvertimeDto> list() {
+        List<Overtime> overtimes = overtimeRepository.findAll();
+        List<OvertimeDto> overtimeDtos = new ArrayList<>();
+
+        for (Overtime overtime : overtimes) {
+            if (overtime != null) {
+                OvertimeDto overtimeDto = OvertimeDto.builder()
+                        .id(overtime.getId())
+                        .shift(overtime.getShift())
+                        .startTime(overtime.getStartTime())
+                        .endTime(overtime.getEndTime())
+                        .date(overtime.getDate())
+                        .reason(overtime.getReason())
+                        .status(overtime.getStatus())
+                        .build();
+                overtimeDtos.add(overtimeDto);
+            }
+        }
+        return overtimeDtos;
+    }
+
+    public OvertimeDto read(Integer id) {
+        Overtime overtime = overtimeRepository.findById(id).orElseThrow(()->new OvertimeNotFoundException(""));
+
+        return OvertimeDto.builder()
+                .id(overtime.getId())
+                .shift(overtime.getShift())
+                .startTime(overtime.getStartTime())
+                .endTime(overtime.getEndTime())
+                .date(overtime.getDate())
+                .reason(overtime.getReason())
+                .status(overtime.getStatus())
+                .build();
+    }
+
+
+    public void update(Integer id, OvertimeDto overtimeDto) {
+        Optional<Overtime> result = overtimeRepository.findById(id);
         if(result.isPresent()) {
             Overtime overtime = result.get();
-            overtime.setDate(overtimeDto.getDate());
             overtime.setShift(overtimeDto.getShift());
+            overtime.setDate(overtimeDto.getDate());
             overtime.setStartTime(overtimeDto.getStartTime());
             overtime.setEndTime(overtimeDto.getEndTime());
-            overtime.setReason(overtimeDto.getReason()); //수정할 수 있는 부분(전체 다 수정가능하게끔)
+            overtime.setReason(overtimeDto.getReason());
+            overtime.setStatus("대기 중");
             overtimeRepository.save(overtime);
         }
     }
 
-    public Long getOverTime(LocalDate startDate, LocalDate endDate, EmployeeDto employee) {
-        List<Overtime> overtimeList = overtimeRepository.findAllByEmployee(Employee.builder().id(employee.getId()).build());
+    public void approveOvertime(Integer id) {
+        Overtime overtime = overtimeRepository.findById(id)
+                .orElseThrow(() -> new OvertimeNotFoundException("초과 근무를 찾을 수 없습니다."));
 
-        //Todo 예외 처리 : 결과가 비어있다면
-        Long totalMinutes = 0L;
-        for(Overtime overtime:overtimeList){
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate overtimeDate = LocalDate.parse(overtime.getDate(), formatter);
-
-            if(overtimeDate.isAfter(startDate) && overtimeDate.isBefore(endDate)){
-
-                LocalTime startTime = LocalTime.parse(overtime.getEndTime());
-                LocalTime endTime = LocalTime.parse(overtime.getStartTime());
-                // 시작 시간과 종료 시간의 Duration 계산
-                Duration duration = Duration.between(startTime, endTime);
-
-                // 총 업무 시간 계산
-                totalMinutes += duration.toMinutes();
-
-            }
-        }
-//        long hours = totalMinutes / 60; // 시간 계산
-//        long minutes = totalMinutes % 60; // 분 계산
-
-        // 시간과 분을 문자열로 결합하여 sumTime에 저장
-//        String sumTime = String.format("%d h %d m", hours, minutes);
-        return totalMinutes / 60;
+        // 초과 근무 승인 시 상태를 "승인됨"으로 변경합니다.
+        overtime.setStatus("승인됨");
+        overtimeRepository.save(overtime);
     }
+
 }
