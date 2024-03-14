@@ -15,6 +15,7 @@ public class OvertimeDto {
     private String startTime;
     private String endTime;
     private String reason;
+    private String status;
 
 
 }
