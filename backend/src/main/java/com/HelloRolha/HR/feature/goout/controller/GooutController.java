@@ -71,14 +71,14 @@ public class GooutController {
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/return")
     public ResponseEntity<BaseRes> returnStatus(@RequestBody GooutReturnReq gooutReturnReq) {
-        gooutService.returnStatus(gooutReturnReq.getId(), gooutReturnReq.getGooutLineId());
+        gooutService.returnStatus(gooutReturnReq);
         String message;
 
-        if (gooutReturnReq.getGooutLineId() == 1) {
+        if (gooutReturnReq.getStatus() == 1) {
             message = "결재자1 휴가/외출 승인 성공";
-        } else if (gooutReturnReq.getGooutLineId() == 2) {
+        } else if (gooutReturnReq.getStatus() == 2) {
             message = "결재자2 휴가/외출 승인 성공";
-        } else if (gooutReturnReq.getGooutLineId() == 3) {
+        } else if (gooutReturnReq.getStatus() == 3) {
             message = "휴가/외출 반려 성공";
         } else {
             message = "잘못된 상태 값";
@@ -91,6 +91,7 @@ public class GooutController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
     public ResponseEntity<BaseRes> update(@RequestBody GooutUpdateReq gooutUpdateReq) {

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class GooutReturnReq {
     private Integer id;
-    private Integer gooutLineId;
+    private Integer status;
 }

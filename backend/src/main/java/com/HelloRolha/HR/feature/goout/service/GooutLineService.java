@@ -116,7 +116,7 @@ public class GooutLineService {
 
     @Transactional
     public void confirm1(GooutLineConfirm gooutLineConfirm) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(gooutLineConfirm.getGooutId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
 
         if (!gooutLine.getConfirmer1().getId().equals(gooutLineConfirm.getConfirmer1Id())){
@@ -136,7 +136,7 @@ public class GooutLineService {
 
     @Transactional
     public void confirm2(GooutLineConfirm gooutLineConfirm) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(gooutLineConfirm.getGooutId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
 
         if (!gooutLine.getConfirmer2().getId().equals(gooutLineConfirm.getConfirmer2Id())){
@@ -155,7 +155,7 @@ public class GooutLineService {
 
     @Transactional
     public void reject1 (GooutLineConfirm gooutLineConfirm) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(gooutLineConfirm.getGooutId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
 
         if (!gooutLine.getConfirmer1().getId().equals(gooutLineConfirm.getConfirmer1Id())){
@@ -176,7 +176,7 @@ public class GooutLineService {
 
     @Transactional
     public void reject2 (GooutLineConfirm gooutLineConfirm) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(gooutLineConfirm.getGooutId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
 
         if (!gooutLine.getConfirmer2().getId().equals(gooutLineConfirm.getConfirmer2Id())){
