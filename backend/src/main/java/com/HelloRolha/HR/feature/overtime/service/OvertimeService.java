@@ -116,8 +116,8 @@ public class OvertimeService {
 
             if(overtimeDate.isAfter(startDate) && overtimeDate.isBefore(endDate)){
 
-                LocalTime startTime = LocalTime.parse(overtime.getEndTime());
-                LocalTime endTime = LocalTime.parse(overtime.getStartTime());
+                LocalTime startTime = LocalTime.parse(overtime.getStartTime());
+                LocalTime endTime = LocalTime.parse(overtime.getEndTime());
                 // 시작 시간과 종료 시간의 Duration 계산
                 Duration duration = Duration.between(startTime, endTime);
 

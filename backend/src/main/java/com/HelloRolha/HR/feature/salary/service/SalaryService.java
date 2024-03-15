@@ -6,6 +6,8 @@ import com.HelloRolha.HR.feature.employee.service.EmployeeService;
 import com.HelloRolha.HR.feature.goout.service.GooutService;
 import com.HelloRolha.HR.feature.overtime.service.OvertimeService;
 import com.HelloRolha.HR.feature.salary.model.dto.SalaryDto;
+import com.HelloRolha.HR.feature.salary.model.entity.Salary;
+import com.HelloRolha.HR.feature.salary.repo.SalaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,28 @@ public class SalaryService {
     private final CommuteService commuteService;
     private final GooutService gooutService;
     private final OvertimeService overtimeService;
+
+    private final SalaryRepository salaryRepository;
+
+    public List<SalaryDto> createSalary(){
+        //ex 3월의 월급을 계산하면
+        // 2월달의 근무 내용이 필요하다.
+        LocalDate batchDate = LocalDate.now();
+        batchDate = batchDate.minusMonths(1);
+        LocalDate firstDay= batchDate.withDayOfMonth(1);;
+        LocalDate lastDay = batchDate.withDayOfMonth(batchDate.lengthOfMonth());;
+
+
+        List<SalaryDto> list = getSalaryList(firstDay,lastDay);
+        List<Salary> entityList = new ArrayList<>();
+        for(SalaryDto salaryDto : list){
+            salaryDto.setBatchDate(batchDate);
+            entityList.add(salaryDto.toEntity());
+        }
+        salaryRepository.saveAll(entityList);
+        return list;
+    }
+
 
     // 시작일자에서 종료일자까지 급여 계산
     public List<SalaryDto> getSalaryList(LocalDate startDate, LocalDate endDate){
@@ -61,7 +85,7 @@ public class SalaryService {
 
         //Duration duration = Duration.between(startDate,endDate);
 
-        Long workHour = 200L*8; //Todo 주말 빼는 로직 추가해야함.
+        Long workHour = 200L; //Todo 주말 빼는 로직 추가해야함.
         // 주말 빼고 ...
         // 휴무일 빼고 ...
         // 주말 근무는 또 뭐하고...

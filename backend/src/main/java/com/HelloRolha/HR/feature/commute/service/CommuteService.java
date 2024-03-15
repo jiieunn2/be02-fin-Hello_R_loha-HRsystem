@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class CommuteService {
         long minutes = totalMinutes % 60; // 분 계산
 
         // 시간과 분을 문자열로 결합하여 sumTime에 저장
-        String sumTime = String.format("%d h %d m", hours, minutes);
+        String sumTime = String.format("%d:%d", hours, minutes);
         commute.setSumTime(sumTime);
 
         Commute updatedCommute = commuteRepository.save(commute);
@@ -152,13 +153,14 @@ public class CommuteService {
 
         for (Commute commute:Commutes){
             if(startDate.isBefore(commute.getCreateAt().toLocalDate())  && endDate.isAfter(commute.getCreateAt().toLocalDate())){
-                Duration duration = Duration.between( commute.getCreateAt(),commute.getUpdateAt());
+                String hour = commute.getSumTime().split(":")[0];
+                String min = commute.getSumTime().split(":")[1];
 
                 // 하루 일한 총 시간 - 휴식 시간해야됨
-                long totalMinutes = duration.toMinutes();
+//                long totalMinutes = duration.toMinutes();
                 // 만약 8시간이 넘어간다면?
 
-                counter += 480;
+                counter += Integer.parseInt(hour)*60 + Integer.parseInt(min);
             }
 
         }
