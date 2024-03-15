@@ -19,16 +19,18 @@ public class Overtime {
     private String startTime;
     private String endTime;
     private String reason;
+    private String status;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Employee employee;
     @Builder
-    public Overtime(Integer id, String shift, String startTime, String endTime,String reason, String date) {
+    public Overtime(Integer id, String shift, String startTime, String endTime,String reason, String date, String status) {
         this.id = id;
         this.shift = shift;
         this.startTime = startTime;
         this.endTime = endTime;
         this.reason = reason;
         this.date = date;
+        this.status = status;
     }
 }

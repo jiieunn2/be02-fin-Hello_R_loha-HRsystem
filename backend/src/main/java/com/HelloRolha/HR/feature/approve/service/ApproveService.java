@@ -14,6 +14,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.patterns.IToken;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,17 +41,22 @@ public class ApproveService {
     @Value("gurigiri-s3")
     private String bucket;
 
+    @Transactional
     public ApproveCreateRes create(ApproveCreateReq approveCreateReq) {
+        Employee employee = ((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
         Approve approve = Approve.builder()
                 .content(approveCreateReq.getContent())
                 .title(approveCreateReq.getTitle())
                 .status(0)
+                .employee(employee)
                 .build();
 
         Approve app = approveRepository.save(approve);
 
         return ApproveCreateRes.builder()
                 .id(app.getId())
+                .employeeId(app.getEmployee().getId())
                 .title(app.getTitle())
                 .content(app.getContent())
                 .status(app.getStatus())
@@ -67,19 +73,29 @@ public class ApproveService {
             Employee employee = approve.getEmployee();
             String employeeName = employee != null ? employee.getName() : "Unknown"; // Employee가 null이면 "Unknown"
 
+            String confirmer1Name = "Unknown"; // 초기값 설정
+            String confirmer2Name = "Unknown"; // 초기값 설정
+
+            if (!approve.getApproveLines().isEmpty()) {
+                ApproveLine firstApproveLine = approve.getApproveLines().get(0); // 첫 번째 ApproveLine 가져오기
+                confirmer1Name = firstApproveLine.getConfirmer1() != null ? firstApproveLine.getConfirmer1().getName() : "N/A";
+                confirmer2Name = firstApproveLine.getConfirmer2() != null ? firstApproveLine.getConfirmer2().getName() : "N/A";
+            }
+
             ApproveList approveList = ApproveList.builder()
                     .id(approve.getId())
-                    .name(employeeName) // Employee의 이름을 설정하거나, Employee가 null일 경우 "Unknown"
+                    .name(employeeName)
                     .title(approve.getTitle())
                     .content(approve.getContent())
                     .createAt(approve.getCreateAt())
                     .updateAt(approve.getUpdateAt())
+                    .confirmer1(confirmer1Name) // confirmer1의 이름 설정
+                    .confirmer2(confirmer2Name) // confirmer2의 이름 설정
                     .status(approve.getStatus())
                     .build();
 
             approveLists.add(approveList);
         }
-
 
         return approveLists;
     }
@@ -89,11 +105,19 @@ public class ApproveService {
     public ApproveRead read(Integer approveId) {
         Approve approve = approveRepository.findById(approveId)
                 .orElseThrow(() -> new RuntimeException("결재 정보를 찾을 수 없습니다."));
-
+        String confirmer1Name = "Unknown"; // 초기값 설정
+        String confirmer2Name = "Unknown"; // 초기값 설정
+        if (!approve.getApproveLines().isEmpty()) {
+            ApproveLine firstApproveLine = approve.getApproveLines().get(0); // 첫 번째 ApproveLine 가져오기
+            confirmer1Name = firstApproveLine.getConfirmer1() != null ? firstApproveLine.getConfirmer1().getName() : "N/A";
+            confirmer2Name = firstApproveLine.getConfirmer2() != null ? firstApproveLine.getConfirmer2().getName() : "N/A";
+        }
         return ApproveRead.builder()
                 .id(approve.getId())
                 .title(approve.getTitle())
                 .createTime(approve.getCreateAt())
+                .confirmer1(confirmer1Name) // confirmer1의 이름 설정
+                .confirmer2(confirmer2Name) // confirmer2의 이름 설정
                 .content(approve.getContent())
                 .build();
     }

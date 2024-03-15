@@ -7,6 +7,7 @@ import com.HelloRolha.HR.feature.commute.model.Commute;
 import com.HelloRolha.HR.feature.commute.model.dto.CommuteCheckRes;
 import com.HelloRolha.HR.feature.commute.model.dto.CommuteDto;
 import com.HelloRolha.HR.feature.commute.repository.CommuteRepository;
+import com.HelloRolha.HR.feature.employee.model.dto.EmployeeDto;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,5 +137,31 @@ public class CommuteService {
                 .endTime(lastCommute.getUpdateAt().format(formatter))
                 .sumTime(lastCommute.getSumTime())
                 .build();
+    }
+
+    public Long getWorkTimeByMinutes(LocalDate startDate,LocalDate endDate, EmployeeDto employee) {
+        Long counter = 0L;
+        //Todo 비효율적인 쿼리임. 바꿀 수 있으면 바꾸자.
+        //sql 문을 month 에 맞는 데이터만 가져오도록 만들 수 있다.
+        List<Commute> Commutes = commuteRepository.findAllByEmployee(Employee.builder().id(employee.getId()).build());
+        if(Commutes.isEmpty()){
+
+            System.out.println("오류 예외 처리해라");
+            return counter;
+        }
+
+        for (Commute commute:Commutes){
+            if(startDate.isBefore(commute.getCreateAt().toLocalDate())  && endDate.isAfter(commute.getCreateAt().toLocalDate())){
+                Duration duration = Duration.between( commute.getCreateAt(),commute.getUpdateAt());
+
+                // 하루 일한 총 시간 - 휴식 시간해야됨
+                long totalMinutes = duration.toMinutes();
+                // 만약 8시간이 넘어간다면?
+
+                counter += 480;
+            }
+
+        }
+        return counter;
     }
 }

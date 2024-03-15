@@ -25,9 +25,11 @@ public class ApproveController {
     public ResponseEntity create(@RequestPart ApproveCreateReq approveCreateReq,
                                 @RequestPart MultipartFile[] uploadFiles) {
 ApproveCreateRes approveCreateRes = approveService.create(approveCreateReq);
-        for (MultipartFile uploadFile:uploadFiles) {
-            String uploadPath = approveService.uploadFile(uploadFile);
-            approveService.saveFile(approveCreateRes.getId(), uploadPath);
+        if (uploadFiles != null) {
+            for (MultipartFile uploadFile : uploadFiles) {
+                String uploadPath = approveService.uploadFile(uploadFile);
+                approveService.saveFile(approveCreateRes.getId(), uploadPath);
+            }
         }
 
         BaseRes response = BaseRes.builder()
