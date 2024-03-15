@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -139,6 +140,23 @@ public class CommuteService {
                 .sumTime(lastCommute.getSumTime())
                 .build();
     }
+
+    public List<CommuteDto> mainlist() {
+        List<Commute> commutes = commuteRepository.findAll();
+        List<CommuteDto> commuteDtos = new ArrayList<>();
+
+        for (Commute commute : commutes) {
+            if (commute != null && commute.getEmployee() != null ) { // commute, employee, 출근시간이 null이 아닌 경우
+                CommuteDto commuteDto = CommuteDto.builder()
+                        .id(commute.getEmployee().getId())
+                        .employeeName(commute.getEmployee().getName())
+                        .build();
+                commuteDtos.add(commuteDto);
+            }
+        }
+        return commuteDtos;
+    }
+
 
     public Long getWorkTimeByMinutes(LocalDate startDate,LocalDate endDate, EmployeeDto employee) {
         Long counter = 0L;
