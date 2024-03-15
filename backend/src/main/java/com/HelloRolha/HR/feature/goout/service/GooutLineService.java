@@ -221,7 +221,7 @@ public class GooutLineService {
 
     @Transactional
     public void delete(Integer id) {
-        GooutLine gooutLine = gooutLineRepository.findById(id)
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 결재라인이 존재하지 않습니다."));
 
         gooutLineRepository.delete(gooutLine);
