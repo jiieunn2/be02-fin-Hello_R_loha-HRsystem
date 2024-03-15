@@ -1,16 +1,21 @@
 # hr_system
 
-![배너](https://github.com/kkm4232/be02-1st-kkm-practice/assets/149145532/c76b9c8e-019b-4e0a-b53c-ddf75de35a42)
+![ea3b64c35a81da70e7697c7b7f51a40c](https://github.com/kkm4232/be02-pre-Jenkins-practice/assets/149145532/27cbc02e-0c2f-48d9-8acc-53115237b506)
+
+
+
 
 > **[플레이 데이터] 한화시스템 BEYOND SW캠프/ (🔶Hello_R_loha-HRsystem🔶)**
+---
+
 
 <br>
 
-## &nbsp;📂 [ Hello_R_loha 데모 사이트 바로가기](여기 링크 들어갈 예정) 
+## &nbsp;🌺 [ Hello_R_loha 데모 사이트 바로가기](여기 링크 들어갈 예정)
 
 <br>
 
-### 🤼‍♂️팀원 소개
+### 🪷팀원 소개
 
 <br><br>
 
@@ -19,11 +24,9 @@
 
 
 ## 💐 프로젝트 기본 소개
-- 많은 스타트업 회사가 인사시스템의 도입 이후 **"회사 실적증가 및 직원 만족도 증가"** 로 긍정적인 영향을 끼친 만큼,   
-  **"인사시스템의 중요도"** &nbsp;&nbsp;가 높아지고 있다.
+- 많은 스타트업 회사가 인사시스템의 도입 이후 **"회사 실적증가 및 직원 만족도 증가"** 로 긍정적인 영향을 끼친 만큼  &nbsp;**"인사시스템의 중요도"** &nbsp;가 높아지고 있다.
   
-- 따라서 **직원관리, 급여관리, 결재시스템을 자동화**하여 인사시스템의 대한 긍정적 효과를 극대화 시킴으로써  
-  **비대면 인사시스템** 을 만족시키는 **"<span style="color:Orange">자동화 인사시스템"</span>** 을 제공한다.
+- 따라서 **직원관리, 급여관리, 결재시스템을 자동화**하여 인사시스템의 대한 긍정적 효과를 극대화 시킴으로써  **비대면 인사시스템** 을 만족시키는 **"<span style="color:Orange">자동화 인사시스템"</span>** 을 제공한다.
 
 <br>
 
@@ -51,12 +54,6 @@
 
 <br>
 
-## 🌺 프로젝트 설계
-
-### &nbsp;&nbsp;➡ &nbsp;[ 피그마(Figma) 바로가기](https://www.figma.com/file/1iFf0h27CtXPPjsuL7Ycg6/Untitled?type=design&node-id=0-1&mode=design&t=gHhORskMPlcK0mZm-0)
-
-<br>
-
 ### 🌷&nbsp;&nbsp;시스템 아키텍처
 
 <br>
@@ -64,6 +61,7 @@
 ![아키텍처](https://github.com/kkm4232/be02-1st-kkm-practice/assets/149145532/a3fc3d4a-01cc-494c-a46a-135016b7fdd3)
 
 <br>
+
 
 ## 🌹 Api 명세서
 
@@ -75,7 +73,7 @@ https://www.notion.so/API-8c27a6f2844a47c29983097851ee43ba
 https://drive.google.com/file/d/1rbtHuxrIUOgK3eVmim1Ep22Cle-bNTAN/view?usp=sharing
 
 
-### 🍀화면 설계서
+### 🌼화면 설계서
 
 https://www.figma.com/file/1iFf0h27CtXPPjsuL7Ycg6/Untitled?type=design&node-id=0-1&mode=design&t=OGc7niNt5Dcmnqaf-0
 
