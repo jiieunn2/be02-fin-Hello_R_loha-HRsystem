@@ -19,6 +19,7 @@ public class CommuteDto {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String sumTime;
+    private String employeeName;
 }
 
 

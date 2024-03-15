@@ -19,7 +19,9 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -68,7 +70,7 @@ public class CommuteService {
         long minutes = totalMinutes % 60; // 분 계산
 
         // 시간과 분을 문자열로 결합하여 sumTime에 저장
-        String sumTime = String.format("%d h %d m", hours, minutes);
+        String sumTime = String.format("%d:%d", hours, minutes);
         commute.setSumTime(sumTime);
 
         Commute updatedCommute = commuteRepository.save(commute);
@@ -139,6 +141,23 @@ public class CommuteService {
                 .build();
     }
 
+    public List<CommuteDto> mainlist() {
+        List<Commute> commutes = commuteRepository.findAll();
+        List<CommuteDto> commuteDtos = new ArrayList<>();
+
+        for (Commute commute : commutes) {
+            if (commute != null && commute.getEmployee() != null ) { // commute, employee, 출근시간이 null이 아닌 경우
+                CommuteDto commuteDto = CommuteDto.builder()
+                        .id(commute.getEmployee().getId())
+                        .employeeName(commute.getEmployee().getName())
+                        .build();
+                commuteDtos.add(commuteDto);
+            }
+        }
+        return commuteDtos;
+    }
+
+
     public Long getWorkTimeByMinutes(LocalDate startDate,LocalDate endDate, EmployeeDto employee) {
         Long counter = 0L;
         //Todo 비효율적인 쿼리임. 바꿀 수 있으면 바꾸자.
@@ -152,13 +171,14 @@ public class CommuteService {
 
         for (Commute commute:Commutes){
             if(startDate.isBefore(commute.getCreateAt().toLocalDate())  && endDate.isAfter(commute.getCreateAt().toLocalDate())){
-                Duration duration = Duration.between( commute.getCreateAt(),commute.getUpdateAt());
+                String hour = commute.getSumTime().split(":")[0];
+                String min = commute.getSumTime().split(":")[1];
 
                 // 하루 일한 총 시간 - 휴식 시간해야됨
-                long totalMinutes = duration.toMinutes();
+//                long totalMinutes = duration.toMinutes();
                 // 만약 8시간이 넘어간다면?
 
-                counter += 480;
+                counter += Integer.parseInt(hour)*60 + Integer.parseInt(min);
             }
 
         }

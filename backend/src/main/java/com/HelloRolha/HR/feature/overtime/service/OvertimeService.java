@@ -6,6 +6,7 @@ import com.HelloRolha.HR.feature.overtime.model.Overtime;
 import com.HelloRolha.HR.feature.overtime.model.dto.OvertimeDto;
 import com.HelloRolha.HR.feature.overtime.repository.OvertimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -28,6 +29,8 @@ public class OvertimeService {
     }
 
     public Overtime processOvertimeRequest(OvertimeDto overtimeDto) {
+
+        Employee employee = ((Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         Overtime overtime = Overtime.builder()
                 .date(overtimeDto.getDate())
                 .shift(overtimeDto.getShift())
@@ -35,6 +38,7 @@ public class OvertimeService {
                 .endTime(overtimeDto.getEndTime())
                 .reason(overtimeDto.getReason())
                 .status("대기 중")
+                .employee(employee)
                 .build();
 
         return overtimeRepository.save(overtime);
@@ -112,8 +116,8 @@ public class OvertimeService {
 
             if(overtimeDate.isAfter(startDate) && overtimeDate.isBefore(endDate)){
 
-                LocalTime startTime = LocalTime.parse(overtime.getEndTime());
-                LocalTime endTime = LocalTime.parse(overtime.getStartTime());
+                LocalTime startTime = LocalTime.parse(overtime.getStartTime());
+                LocalTime endTime = LocalTime.parse(overtime.getEndTime());
                 // 시작 시간과 종료 시간의 Duration 계산
                 Duration duration = Duration.between(startTime, endTime);
 

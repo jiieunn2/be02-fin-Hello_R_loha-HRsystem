@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/employee")
 @CrossOrigin("*")
@@ -51,6 +53,18 @@ public class CommuteController {
                 .result(commuteService.leave(id))
                 .build();
         return ResponseEntity.ok().body(res);
+    }
+
+    @GetMapping("/commute/mainlist") // 출퇴근 목록 조회
+    public ResponseEntity<BaseRes> mainlist() {
+        List<CommuteDto> commuteDtos = commuteService.mainlist(); // 서비스 계층의 mainlist 메서드 호출
+        BaseRes response = BaseRes.builder()
+                .code(1200)
+                .message("출퇴근 현황 성공")
+                .isSuccess(true)
+                .result(commuteDtos)
+                .build();
+        return ResponseEntity.ok().body(response);
     }
 }
 

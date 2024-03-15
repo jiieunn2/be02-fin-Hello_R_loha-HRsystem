@@ -82,7 +82,7 @@ public class ManagerController {
                 .code(200)
                 .isSuccess(true)
                 .message("직원 정보 성공")
-                .result(salaryService.getSalaryList(startDate,endDate))
+                .result(salaryService.createSalary())
                 .build();
 
 

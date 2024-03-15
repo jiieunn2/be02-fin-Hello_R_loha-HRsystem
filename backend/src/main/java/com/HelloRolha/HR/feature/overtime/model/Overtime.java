@@ -24,7 +24,7 @@ public class Overtime {
     @JoinColumn(name = "employee_id")
     private Employee employee;
     @Builder
-    public Overtime(Integer id, String shift, String startTime, String endTime,String reason, String date, String status) {
+    public Overtime(Integer id, String shift, String startTime, String endTime,String reason, String date, String status,Employee employee) {
         this.id = id;
         this.shift = shift;
         this.startTime = startTime;
@@ -32,5 +32,6 @@ public class Overtime {
         this.reason = reason;
         this.date = date;
         this.status = status;
+        this.employee = employee;
     }
 }
