@@ -1,7 +1,6 @@
 package com.HelloRolha.HR.feature.goout.service;
 
 
-import com.HelloRolha.HR.feature.commute.model.Commute;
 import com.HelloRolha.HR.feature.employee.model.dto.EmployeeDto;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import com.HelloRolha.HR.feature.employee.repo.EmployeeRepository;
@@ -71,29 +70,29 @@ public class GooutService {
         return gooutRepository.save(goout);
     }
 
-@Transactional
-public List<GooutList> list() {
-    List<Goout> goouts = gooutRepository.findAll();
-    List<GooutList> gooutLists = new ArrayList<>();
+    @Transactional
+    public List<GooutList> list() {
+        List<Goout> goouts = gooutRepository.findAll();
+        List<GooutList> gooutLists = new ArrayList<>();
 
-    for (Goout goout : goouts) {
-        Employee employee = goout.getEmployee();
-        GooutType gooutType = goout.getGooutType();
-        if (employee != null) {
-            GooutList gooutList = GooutList.builder()
-                    .id(goout.getId())
-                    .name(employee.getName())
-                    .gooutTypeName(gooutType.getName())
-                    .status(goout.getStatus())
-                    .first(goout.getFirst())
-                    .last(goout.getLast())
-                    .build();
-            gooutLists.add(gooutList);
+        for (Goout goout : goouts) {
+            Employee employee = goout.getEmployee();
+            GooutType gooutType = goout.getGooutType();
+            if (employee != null) {
+                GooutList gooutList = GooutList.builder()
+                        .id(goout.getId())
+                        .name(employee.getName())
+                        .gooutTypeName(gooutType.getName())
+                        .status(goout.getStatus())
+                        .first(goout.getFirst())
+                        .last(goout.getLast())
+                        .build();
+                gooutLists.add(gooutList);
+            }
         }
-    }
 
-    return gooutLists;
-}
+        return gooutLists;
+    }
 
     @Transactional
     public GooutRead read(Integer id) {
@@ -132,14 +131,12 @@ public List<GooutList> list() {
     }
 
     @Transactional
-    public void returnStatus(Integer id, Integer gooutLineId) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineId)
-                .orElseThrow(() -> new RuntimeException("해당 ID의 휴가결재라인 정보를 찾을 수 없습니다."));
+    public void returnStatus(GooutReturnReq gooutReturnReq) {
 
-        Goout goout = gooutRepository.findById(id)
+        Goout goout = gooutRepository.findById(gooutReturnReq.getId())
                 .orElseThrow(() -> new RuntimeException("해당 ID의 휴가/외출 정보를 찾을 수 없습니다."));
 
-        goout.setStatus(gooutLine.getStatus());
+        goout.setStatus(gooutReturnReq.getStatus());
         gooutRepository.save(goout);
     }
 
@@ -155,10 +152,18 @@ public List<GooutList> list() {
         GooutType gooutType = gooutTypeRepository.findById(gooutUpdateReq.getGooutTypeId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 휴가타입이 존재하지 않습니다."));
 
+        Employee employee = employeeRepository.findById(gooutUpdateReq.getEmployeeId())
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 신청직원이 존재하지 않습니다."));
+
+        Employee agent = employeeRepository.findById(gooutUpdateReq.getAgentId())
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 대리자가 존재하지 않습니다."));
+
         // 휴가/외출 정보 업데이트
         goout.setFirst(gooutUpdateReq.getFirst());
         goout.setLast(gooutUpdateReq.getLast());
         goout.setGooutType(gooutType);
+        goout.setEmployee(employee);
+        goout.setAgent(agent);
         gooutRepository.save(goout);
 
 //        // 첨부파일 추가
@@ -254,4 +259,5 @@ public List<GooutList> list() {
         }
         return counter;
     }
+
 }

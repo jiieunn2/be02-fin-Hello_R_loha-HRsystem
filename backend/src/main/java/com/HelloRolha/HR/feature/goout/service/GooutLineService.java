@@ -4,13 +4,14 @@ import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import com.HelloRolha.HR.feature.employee.repo.EmployeeRepository;
 import com.HelloRolha.HR.feature.goout.model.Goout;
 import com.HelloRolha.HR.feature.goout.model.GooutLine;
+import com.HelloRolha.HR.feature.goout.model.GooutType;
 import com.HelloRolha.HR.feature.goout.model.dto.*;
 import com.HelloRolha.HR.feature.goout.repo.GooutLineRepository;
 import com.HelloRolha.HR.feature.goout.repo.GooutRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -96,6 +97,7 @@ public class GooutLineService {
     }
 
     @Transactional
+    //결재id로 결재라인 조회하기
     public GooutLineRead read2(Integer id) {
         GooutLine gooutLine = gooutLineRepository.findByGooutId(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
@@ -116,7 +118,7 @@ public class GooutLineService {
 
     @Transactional
     public void confirm1(GooutLineConfirm gooutLineConfirm) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(gooutLineConfirm.getGooutId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
 
         if (!gooutLine.getConfirmer1().getId().equals(gooutLineConfirm.getConfirmer1Id())){
@@ -136,7 +138,7 @@ public class GooutLineService {
 
     @Transactional
     public void confirm2(GooutLineConfirm gooutLineConfirm) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(gooutLineConfirm.getGooutId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
 
         if (!gooutLine.getConfirmer2().getId().equals(gooutLineConfirm.getConfirmer2Id())){
@@ -155,7 +157,7 @@ public class GooutLineService {
 
     @Transactional
     public void reject1 (GooutLineConfirm gooutLineConfirm) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(gooutLineConfirm.getGooutId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
 
         if (!gooutLine.getConfirmer1().getId().equals(gooutLineConfirm.getConfirmer1Id())){
@@ -176,7 +178,7 @@ public class GooutLineService {
 
     @Transactional
     public void reject2 (GooutLineConfirm gooutLineConfirm) {
-        GooutLine gooutLine = gooutLineRepository.findById(gooutLineConfirm.getGooutId())
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(gooutLineConfirm.getGooutId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 결재라인이 존재하지 않습니다."));
 
         if (!gooutLine.getConfirmer2().getId().equals(gooutLineConfirm.getConfirmer2Id())){
@@ -194,6 +196,7 @@ public class GooutLineService {
         gooutLine.setApplyTime(localDateTimeInKorea); // applyTime 설정
         gooutLineRepository.save(gooutLine); // 변경 사항 저장
     }
+
 
     @Transactional
     public void update(GooutLineUpdateReq gooutLineUpdateReq) {
@@ -213,9 +216,12 @@ public class GooutLineService {
         gooutLine.setConfirmer(employee);
         gooutLineRepository.save(gooutLine);
     }
+
+
+
     @Transactional
     public void delete(Integer id) {
-        GooutLine gooutLine = gooutLineRepository.findById(id)
+        GooutLine gooutLine = gooutLineRepository.findByGooutId(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 결재라인이 존재하지 않습니다."));
 
         gooutLineRepository.delete(gooutLine);
