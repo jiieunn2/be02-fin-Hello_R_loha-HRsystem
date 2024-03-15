@@ -1,7 +1,6 @@
 package com.HelloRolha.HR.feature.approve.service;
 
 import com.HelloRolha.HR.error.ApproveNotFoundException;
-import com.HelloRolha.HR.error.EntityNotFoundException;
 import com.HelloRolha.HR.feature.approve.model.Approve;
 import com.HelloRolha.HR.feature.approve.model.ApproveLine;
 import com.HelloRolha.HR.feature.approve.model.dto.ApproveLine.*;
@@ -9,15 +8,11 @@ import com.HelloRolha.HR.feature.approve.repo.ApproveLineRepository;
 import com.HelloRolha.HR.feature.approve.repo.ApproveRepository;
 import com.HelloRolha.HR.feature.employee.model.entity.Employee;
 import com.HelloRolha.HR.feature.employee.repo.EmployeeRepository;
-import com.HelloRolha.HR.feature.goout.model.GooutLine;
-import com.HelloRolha.HR.feature.goout.model.dto.GooutLineConfirm;
-import com.HelloRolha.HR.feature.goout.model.dto.GooutLineList;
-import com.HelloRolha.HR.feature.goout.model.dto.GooutLineRead;
+import com.HelloRolha.HR.feature.goout.model.Goout;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -30,6 +25,7 @@ import java.util.Optional;
 public class ApproveLineService {
     private final ApproveLineRepository approveLineRepository;
     private final EmployeeRepository employeeRepository;
+    private final ApproveRepository approveRepository;
 
     ZonedDateTime nowInKorea = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
     LocalDateTime localDateTimeInKorea = nowInKorea.toLocalDateTime();
@@ -43,16 +39,17 @@ public class ApproveLineService {
                 .orElseThrow(() -> new IllegalArgumentException("결재자1의 ID가 존재하지 않습니다."));
         Employee confirmer2 = employeeRepository.findById(approveLineCreateReq.getConfirmer2Id())
                 .orElseThrow(() -> new IllegalArgumentException("결재자2의 ID가 존재하지 않습니다."));
+        Approve approve = approveRepository.findById(approveLineCreateReq.getApproveId())
+                .orElseThrow(() -> new IllegalArgumentException("휴가의 ID가 존재하지 않습니다."));
 
-        ApproveLine approveLine =approveLineRepository.save(ApproveLine.builder()
-                        .approve(Approve.builder().id(approveLineCreateReq.getApproveId()).build())
-                        .comment(approveLineCreateReq.getComment())
-                        .confirmer1(Employee.builder().id(approveLineCreateReq.getConfirmer1Id()).build())
-                        .confirmer2(Employee.builder().id(approveLineCreateReq.getConfirmer2Id()).build())
+        ApproveLine approveLine =ApproveLine.builder()
+                        .approve(approve)
+                        .confirmer1(confirmer1)
+                        .confirmer2(confirmer2)
                         .status(0)
-                        .build());
+                        .build();
 
-        return null;
+        return approveLineRepository.save(approveLine);
     }
 
     public Object applyApprove(Integer approveId) {
