@@ -1,14 +1,10 @@
 package com.HelloRolha.HR.feature.approve.controller;
 
 import com.HelloRolha.HR.common.dto.BaseRes;
-import com.HelloRolha.HR.feature.approve.model.Approve;
 import com.HelloRolha.HR.feature.approve.model.dto.Approve.*;
 import com.HelloRolha.HR.feature.approve.service.ApproveService;
-import com.HelloRolha.HR.feature.employee.model.entity.Employee;
-import com.HelloRolha.HR.feature.goout.model.dto.GooutList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

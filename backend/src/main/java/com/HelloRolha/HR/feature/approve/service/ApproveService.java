@@ -12,7 +12,6 @@ import com.HelloRolha.HR.feature.employee.repo.EmployeeRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.patterns.IToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -115,7 +114,6 @@ public class ApproveService {
         return ApproveRead.builder()
                 .id(approve.getId())
                 .title(approve.getTitle())
-                .createTime(approve.getCreateAt())
                 .confirmer1(confirmer1Name) // confirmer1의 이름 설정
                 .confirmer2(confirmer2Name) // confirmer2의 이름 설정
                 .content(approve.getContent())

@@ -3,10 +3,8 @@ package com.HelloRolha.HR.feature.approve.model.dto.Approve;
 import com.HelloRolha.HR.feature.approve.model.ApproveFile;
 import com.HelloRolha.HR.feature.approve.model.ApproveLine;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.OneToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
