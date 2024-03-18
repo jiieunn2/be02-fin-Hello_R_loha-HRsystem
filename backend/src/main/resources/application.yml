@@ -1,0 +1,39 @@
+jwt:
+  secret-key: abcdefghijklmnopqrstuvwxyz0123456789
+  token:
+    expired-time-ms: 3000000
+spring:
+  profiles:
+    active: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/HR_system
+    username: root
+    password: qwer1234
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      hibernate.show_sql: true
+      hibernate.format_sql: true
+
+#  삭제된 버킷이라 괜찮아요!! 실행되나 해서 넣어봤어요. 여기부분은 나중에 처리할게요..ㅎ
+#  삭제된 버킷이라 괜찮아요!! 실행되나 해서 넣어봤어요. 여기부분은 나중에 처리할게요..ㅎ
+#  삭제된 버킷이라 괜찮아요!! 실행되나 해서 넣어봤어요. 여기부분은 나중에 처리할게요..ㅎ
+cloud:
+  aws:
+    s3:
+      bucket: lch2023-s3
+    credentials:
+      access-key: AKIA2H67JGHVCOYRJA54
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+#  삭제된 버킷이라 괜찮아요!! 실행되나 해서 넣어봤어요. 여기부분은 나중에 처리할게요..ㅎ
+#  삭제된 버킷이라 괜찮아요!! 실행되나 해서 넣어봤어요. 여기부분은 나중에 처리할게요..ㅎ
+#  삭제된 버킷이라 괜찮아요!! 실행되나 해서 넣어봤어요. 여기부분은 나중에 처리할게요..ㅎ
+
