@@ -1,4 +1,5 @@
 FROM nginx:latest
+
 ADD ./dist/css /usr/share/nginx/html/css
 ADD ./dist/js /usr/share/nginx/html/js
 ADD ./dist/static /usr/share/nginx/html/static
