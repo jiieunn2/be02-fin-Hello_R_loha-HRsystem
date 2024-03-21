@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Goout extends BaseEntity {
     private Integer status;
-
     private LocalDate first;
     private LocalDate last;
 
