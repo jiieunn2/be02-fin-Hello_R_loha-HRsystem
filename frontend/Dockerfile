@@ -1,6 +1,8 @@
 FROM nginx:latest
-#RUN rm -rf /usr/share/nginx/html/*
-ADD ./html/test.docx /usr/share/nginx/html/
-RUN rm -rf /etc/nginx/conf.d/*
-ADD ./nginx/* /etc/nginx/conf.d/
-CMD ["nginx","-g","daemon off;"]
+ADD ./dist/css /usr/share/nginx/html/css
+ADD ./dist/js /usr/share/nginx/html/js
+RUN rm -rf /usr/share/nginx/html/index.html
+ADD ./dist/index.html /usr/share/nginx/html/index.html
+RUN rm -rf /etc/nginx/conf.d/default.conf
+ADD ./nginx/default.conf /etc/nginx/conf.d/default.conf
+CMD ["nginx", "-g", "daemon off;"]
