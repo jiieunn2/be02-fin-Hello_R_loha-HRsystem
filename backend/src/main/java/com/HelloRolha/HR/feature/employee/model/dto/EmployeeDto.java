@@ -17,4 +17,5 @@ public class EmployeeDto {
     private LocalDate employmentDate;
     private String department;
     private String position;
+    private Long salary;
 }

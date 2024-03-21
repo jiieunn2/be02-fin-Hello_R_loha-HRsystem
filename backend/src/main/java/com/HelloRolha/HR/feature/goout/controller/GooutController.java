@@ -22,19 +22,20 @@ public class GooutController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity create(@RequestPart GooutCreateReq gooutCreateReq,
-                                 @RequestPart MultipartFile[] uploadFiles) {
+                                 @RequestPart(name = "uploadFiles", required = false) MultipartFile[] uploadFiles) {
         Goout goout = gooutService.create(gooutCreateReq);
-
-        for (MultipartFile uploadFile:uploadFiles) {
-            String uploadPath = gooutService.uploadFile(uploadFile);
-            gooutService.saveFile(goout.getId(), uploadPath);
+        if (uploadFiles != null) {
+            for (MultipartFile uploadFile : uploadFiles) {
+                String uploadPath = gooutService.uploadFile(uploadFile);
+                gooutService.saveFile(goout.getId(), uploadPath);
+            }
         }
 
         BaseRes response = BaseRes.builder()
                 .code(1200)
                 .message("휴가/외출 신청 성공")
                 .isSuccess(true)
-                .result(goout)
+                .result(goout.getId())
                 .build();
         return ResponseEntity.ok().body(response);
     }
@@ -70,12 +71,14 @@ public class GooutController {
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/return")
     public ResponseEntity<BaseRes> returnStatus(@RequestBody GooutReturnReq gooutReturnReq) {
-        gooutService.returnStatus(gooutReturnReq.getId(), gooutReturnReq.getStatus());
+        gooutService.returnStatus(gooutReturnReq);
         String message;
 
         if (gooutReturnReq.getStatus() == 1) {
-            message = "휴가/외출 승인 성공";
+            message = "결재자1 휴가/외출 승인 성공";
         } else if (gooutReturnReq.getStatus() == 2) {
+            message = "결재자2 휴가/외출 승인 성공";
+        } else if (gooutReturnReq.getStatus() == 3) {
             message = "휴가/외출 반려 성공";
         } else {
             message = "잘못된 상태 값";
@@ -89,6 +92,7 @@ public class GooutController {
         return ResponseEntity.ok(response);
     }
 
+
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
     public ResponseEntity<BaseRes> update(@RequestBody GooutUpdateReq gooutUpdateReq) {
         gooutService.update(gooutUpdateReq);
@@ -96,6 +100,7 @@ public class GooutController {
                 .code(1200)
                 .message("휴가/외출 정보 수정 성공")
                 .isSuccess(true)
+                .result(gooutUpdateReq)
                 .build();
         return ResponseEntity.ok(response);
     }
@@ -107,6 +112,7 @@ public class GooutController {
                 .code(1200)
                 .message("휴가/외출 정보 삭제 성공")
                 .isSuccess(true)
+                .result("삭제한 id : " + id)
                 .build();
         return ResponseEntity.ok(response);
     }

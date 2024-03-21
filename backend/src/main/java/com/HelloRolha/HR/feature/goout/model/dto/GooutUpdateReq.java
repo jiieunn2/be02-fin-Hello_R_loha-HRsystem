@@ -4,17 +4,17 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
 
 @Builder
 @Data
 public class GooutUpdateReq {
     private Integer id;
-    private LocalDateTime period;
-    private LocalDateTime first;
-    private LocalDateTime last;
-    private List<MultipartFile> newFiles;  // 추가할 파일들
-    private List<Integer> deleteFileIds;   // 삭제할 파일의 ID들
-
+    private LocalDate first;
+    private LocalDate last;
+    private Integer gooutTypeId;
+    private Integer employeeId;
+    private Integer agentId;
+//    private List<MultipartFile> newFiles;  // 추가할 파일들
+//    private List<Integer> deleteFileIds;   // 삭제할 파일의 ID들
 }

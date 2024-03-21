@@ -11,4 +11,5 @@ public class GooutLineCreateReq {
     private Integer confirmer1Id;
     private Integer confirmer2Id;
     private Integer gooutId;
+    private Integer EmployeeId;
 }

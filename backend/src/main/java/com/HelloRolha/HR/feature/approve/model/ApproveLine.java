@@ -14,15 +14,24 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ApproveLine extends ApproveLineBaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String comment;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "confirmer1_id")
+    private Employee confirmer1;
 
-    @ManyToOne @JoinColumn(name = "approve_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "confirmer2_id")
+    private Employee confirmer2;
+
+    @ManyToOne
+    @JoinColumn(name = "approve_id")
     private Approve approve;
 
-    private int order;
+
 
 }

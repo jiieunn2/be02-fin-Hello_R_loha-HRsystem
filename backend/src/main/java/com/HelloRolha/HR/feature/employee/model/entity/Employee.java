@@ -4,11 +4,12 @@ import com.HelloRolha.HR.feature.approve.model.Approve;
 import com.HelloRolha.HR.feature.commute.model.Commute;
 import com.HelloRolha.HR.feature.department.model.entity.Department;
 import com.HelloRolha.HR.feature.goout.model.Goout;
-import com.HelloRolha.HR.feature.goout.model.GooutFile;
+
 import com.HelloRolha.HR.feature.overtime.model.Overtime;
 import com.HelloRolha.HR.feature.position.model.entity.Position;
 
 
+import com.HelloRolha.HR.feature.salary.model.entity.Salary;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
@@ -50,14 +51,20 @@ public class Employee extends BaseEntity implements UserDetails {
     private String birth;
     private String address;
     private Integer age;
+    @ColumnDefault("5000000")
+    private Long salary;
 
     //외래키
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Department_id")
     private Department department;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Position_id")
     private Position position;
+
+
+    @OneToMany(mappedBy = "employee")
+    private List<Salary> salaryList = new ArrayList<>();
 
     // 사용 기능들
     @OneToMany(mappedBy = "employee")

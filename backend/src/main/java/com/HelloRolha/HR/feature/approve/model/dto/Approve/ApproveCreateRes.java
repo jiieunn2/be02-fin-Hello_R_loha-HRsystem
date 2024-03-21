@@ -1,10 +1,11 @@
-package com.HelloRolha.HR.feature.approve.model.dto;
+package com.HelloRolha.HR.feature.approve.model.dto.Approve;
 
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +20,8 @@ public class ApproveCreateRes {
 
     private String filename;
 
-    private LocalDateTime correctionTime;
-
-    private LocalDateTime createTime;
+    @CreatedDate
+    private LocalDateTime createAt;
 
     private Integer status;
 

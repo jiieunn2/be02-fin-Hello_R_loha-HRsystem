@@ -1,4 +1,4 @@
-package com.HelloRolha.HR.feature.approve.model.dto;
+package com.HelloRolha.HR.feature.approve.model.dto.Approve;
 
 import com.HelloRolha.HR.feature.approve.model.ApproveFile;
 import com.HelloRolha.HR.feature.approve.model.ApproveLine;
@@ -21,6 +21,7 @@ public class ApproveUpdateRes {
     private String content;
 
     private String filename;
+
 
     @OneToMany(mappedBy = "approve")
     private List<ApproveFile> approveFiles = new ArrayList<>();

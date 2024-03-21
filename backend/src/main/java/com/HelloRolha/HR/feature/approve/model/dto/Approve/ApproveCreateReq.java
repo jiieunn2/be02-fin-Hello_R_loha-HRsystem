@@ -1,4 +1,4 @@
-package com.HelloRolha.HR.feature.approve.model.dto;
+package com.HelloRolha.HR.feature.approve.model.dto.Approve;
 
 
 import lombok.Builder;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ApproveCreateReq {
-    private Integer id;
+    //private Integer id;
 
     private String content;
 
@@ -21,5 +21,5 @@ public class ApproveCreateReq {
 
     private String title;
 
-    private Integer employeeId;
+    //private Integer employeeId; // 작성자?
 }
